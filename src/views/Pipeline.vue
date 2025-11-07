@@ -1,8 +1,7 @@
 <template>
-  <div class="flex h-full w-full flex-col -mx-4 -mt-6">
+  <div class="flex h-full w-full flex-col -mt-6">
     <div
-      class="grid grid-cols-12 gap-4 border-b border-gray-200 bg-white pb-4 dark:border-gray-700 dark:bg-gray-800"
-      style="margin-left: -1rem; margin-right: -1rem; width: calc(100% + 2rem)"
+      class="pipeline-header grid grid-cols-12 gap-4 border-b border-gray-200 bg-white pb-4 dark:border-gray-700 dark:bg-gray-800"
     >
       <div
         class="col-span-full flex flex-col gap-3 px-4 pt-4 xl:flex-row xl:items-center xl:justify-between"
@@ -31,8 +30,8 @@
             id="pipeline-search"
             v-model="searchTerm"
             type="text"
-            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-9 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-            placeholder="Search for tasks"
+            class="block w-[264px] rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-9 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+            placeholder="Search pipeline"
           />
         </div>
 
@@ -167,3 +166,12 @@ watch(searchTerm, (value) => {
   console.log("Pipeline search term:", value);
 });
 </script>
+
+<style scoped>
+.pipeline-header {
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+</style>

@@ -1,50 +1,49 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import MainLayout from '../layouts/MainLayout.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import MainLayout from "../layouts/MainLayout.vue";
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: MainLayout,
-    redirect: '/dashboard',
+    redirect: "/dashboard",
     children: [
       {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('../views/Dashboard.vue')
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("../views/Dashboard.vue"),
       },
       {
-        path: 'pipeline',
-        name: 'Pipeline',
-        component: () => import('../views/Pipeline.vue')
+        path: "pipeline",
+        name: "Pipeline",
+        component: () => import("../views/Pipeline.vue"),
       },
       {
-        path: 'leads',
-        name: 'Leads',
-        component: () => import('../views/Leads.vue')
+        path: "leads",
+        name: "Leads",
+        component: () => import("../views/Leads.vue"),
       },
       {
-        path: 'user-management',
-        name: 'UserManagement',
-        component: () => import('../views/UserManagement.vue')
+        path: "user-management",
+        name: "UserManagement",
+        component: () => import("../views/UserManagement.vue"),
       },
       {
-        path: 'tenant-management',
-        name: 'TenantManagement',
-        component: () => import('../views/TenantManagement.vue')
+        path: "tenant-management",
+        name: "TenantManagement",
+        component: () => import("../views/TenantManagement.vue"),
       },
       {
-        path: 'settings',
-        name: 'Settings',
-        component: () => import('../views/Settings.vue')
-      }
-    ]
-  }
-]
+        path: "settings",
+        name: "Settings",
+        component: () => import("../views/Settings.vue"),
+      },
+    ],
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
-})
+  routes,
+});
 
-export default router
-
+export default router;
