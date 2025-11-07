@@ -1,4 +1,71 @@
 @import "tailwindcss";
+@import "./styles/theme.css";
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
+@source "../node_modules/flowbite-datepicker";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Custom Primary Color Palette */
+  --color-primary-50: #f5f0ff;
+  --color-primary-100: #e9dafe;
+  --color-primary-200: #d8befe;
+  --color-primary-300: #c19bfd;
+  --color-primary-400: #a870fa;
+  --color-primary-500: #8d5cf3;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
+
+  /* Custom Fonts */
+  --font-sans: "Inter", "ui-sans-serif", "system-ui", "-apple-system",
+    "system-ui", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans",
+    "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --font-body: "Inter", "ui-sans-serif", "system-ui", "-apple-system",
+    "system-ui", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans",
+    "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --font-mono: "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas",
+    "Liberation Mono", "Courier New", "monospace";
+}
+
+/* Sidebar collapse styles */
+.sidebar-collapsible {
+  @apply transition-all duration-300;
+}
+
+.sidebar-collapsible.sidebar-collapsed {
+  @apply lg:!w-16;
+}
+
+.sidebar-collapsible.sidebar-collapsed [data-sidebar-collapse-hide] {
+  @apply hidden;
+}
+
+.sidebar-collapsible.sidebar-collapsed .px-3 {
+  @apply lg:!px-2;
+}
+
+.sidebar-collapsible.sidebar-collapsed .ml-3 {
+  @apply lg:!ml-0;
+}
+
+.sidebar-collapsible.sidebar-collapsed li {
+  @apply lg:!justify-center;
+}
+
+.sidebar-collapsible.sidebar-collapsed [data-sidebar-collapse-item] {
+  @apply lg:!justify-center lg:!p-2;
+}
+
+.sidebar-collapsible.sidebar-collapsed [data-sidebar-collapse-item] svg {
+  @apply lg:!mx-auto lg:!shrink-0;
+}
+
+.sidebar-collapsible.sidebar-collapsed [data-sidebar-collapse-item] .flex-1 {
+  @apply lg:!hidden;
+}
