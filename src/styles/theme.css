@@ -1,0 +1,148 @@
+/**
+ * Design System Theme Variables
+ * CSS Custom Properties for light and dark mode
+ * These variables change automatically when the .dark class is toggled
+ */
+
+/* Smooth transitions for theme changes */
+html {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+body,
+div,
+section,
+aside,
+nav,
+header,
+footer,
+main,
+article {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Faster transitions for interactive elements */
+button,
+a,
+input,
+select,
+textarea {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Exclude SVG elements from transitions (they handle their own) */
+svg,
+svg *,
+path,
+circle,
+rect,
+line,
+polygon {
+  transition: none;
+}
+
+:root {
+  /* Background Colors - Light Mode */
+  --color-bg-primary: #f9fafb; /* gray-50 */
+  --color-bg-secondary: #ffffff; /* white */
+  --color-bg-tertiary: #f3f4f6; /* gray-100 */
+  --color-bg-card: #ffffff; /* white */
+  --color-bg-sidebar: #ffffff; /* white */
+  --color-bg-navbar: #ffffff; /* white */
+  --color-bg-main: #f3f4f6; /* gray-100 */
+  --color-bg-overlay: rgba(17, 24, 39, 0.5); /* gray-900 with opacity */
+
+  /* Text Colors - Light Mode */
+  --color-text-primary: #111827; /* gray-900 */
+  --color-text-secondary: #6b7280; /* gray-500 */
+  --color-text-muted: #9ca3af; /* gray-400 */
+  --color-text-inverse: #f9fafb; /* gray-50 (for dark backgrounds) */
+  --color-text-white: #ffffff;
+
+  /* Border Colors - Light Mode */
+  --color-border-default: #e5e7eb; /* gray-200 */
+  --color-border-muted: #d1d5db; /* gray-300 */
+  --color-border-focus: #3b82f6; /* primary-500 */
+  --color-border-sidebar: #e5e7eb; /* gray-200 */
+
+  /* Semantic Colors - Light Mode */
+  --color-primary: #3b82f6; /* primary-500 */
+  --color-primary-hover: #2563eb; /* primary-600 */
+  --color-success: #22c55e; /* success-500 */
+  --color-warning: #f59e0b; /* warning-500 */
+  --color-danger: #ef4444; /* danger-500 */
+  --color-info: #3b82f6; /* info-500 */
+  
+  /* Sidebar Active State - Light Mode */
+  --indigo-800: #42389D;
+  
+  /* Sidebar Hover State - Light Mode */
+  --color-sidebar-hover: #f3f4f6; /* gray-100 */
+
+  /* Shadows - Light Mode */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+/* Placeholder colors using CSS variables */
+:root input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.dark input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.dark {
+  /* Background Colors - Dark Mode */
+  --color-bg-primary: #111827; /* gray-900 */
+  --color-bg-secondary: #1f2937; /* gray-800 */
+  --color-bg-tertiary: #374151; /* gray-700 */
+  --color-bg-card: #1f2937; /* gray-800 */
+  --color-bg-sidebar: #1f2937; /* gray-800 */
+  --color-bg-navbar: #1f2937; /* gray-800 */
+  --color-bg-main: #4b5563; /* gray-600 */
+  --color-bg-overlay: rgba(17, 24, 39, 0.5); /* gray-900 with opacity */
+
+  /* Text Colors - Dark Mode */
+  --color-text-primary: #f9fafb; /* gray-50 */
+  --color-text-secondary: #9ca3af; /* gray-400 */
+  --color-text-muted: #6b7280; /* gray-500 */
+  --color-text-inverse: #111827; /* gray-900 (for light backgrounds) */
+  --color-text-white: #ffffff;
+
+  /* Border Colors - Dark Mode */
+  --color-border-default: #374151; /* gray-700 */
+  --color-border-muted: #4b5563; /* gray-600 */
+  --color-border-focus: #60a5fa; /* primary-400 */
+  --color-border-sidebar: #374151; /* gray-700 */
+
+  /* Semantic Colors - Dark Mode (slightly adjusted for better contrast) */
+  --color-primary: #60a5fa; /* primary-400 */
+  --color-primary-hover: #3b82f6; /* primary-500 */
+  --color-success: #4ade80; /* success-400 */
+  --color-warning: #fbbf24; /* warning-400 */
+  --color-danger: #f87171; /* danger-400 */
+  --color-info: #60a5fa; /* info-400 */
+  
+  /* Sidebar Active State - Dark Mode (using gray-600) */
+  --color-sidebar-active: #4b5563; /* gray-600 */
+  
+  /* Sidebar Hover State - Dark Mode */
+  --color-sidebar-hover: #374151; /* gray-700 */
+
+  /* Shadows - Dark Mode (stronger shadows for dark backgrounds) */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+}
+
