@@ -75,22 +75,13 @@ import NewLeadsIcon from "../components/icons/NewLeads.vue";
 import ContactedLeadsIcon from "../components/icons/ContactedLeads.vue";
 import WonLeadsIcon from "../components/icons/WonLeads.vue";
 import LostLeadsIcon from "../components/icons/LostLeads.vue";
+import {
+  mockChartSeries,
+  mockChartCategories,
+} from "../mock/dashboard.js";
 
 // Chart data
-const chartSeries = ref([
-  {
-    name: "Templates",
-    data: [631, 600, 540, 580, 490, 580, 620],
-  },
-  {
-    name: "Icons",
-    data: [460, 490, 390, 620, 410, 640, 360],
-  },
-  {
-    name: "Illustrations",
-    data: [232, 630, 341, 224, 522, 411, 243],
-  },
-]);
+const chartSeries = ref(mockChartSeries.map((series) => ({ ...series })));
 
-const chartCategories = ref(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+const chartCategories = ref([...mockChartCategories]);
 </script>
