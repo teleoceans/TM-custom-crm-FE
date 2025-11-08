@@ -27,7 +27,7 @@
       ]"
     >
       <!-- Cards -->
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
         <KanbanCard
           v-for="card in filteredCards"
           :key="card.id"
