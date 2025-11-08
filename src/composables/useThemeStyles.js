@@ -1,132 +1,63 @@
 /**
  * Theme Styles Composable
- * Provides computed style objects for common theme-aware styling patterns
- * Reduces repetition of inline style strings across components
+ * Provides static style objects backed by CSS custom properties.
  */
 
-import { computed } from 'vue'
-import { themeTokens } from '../styles/tokens/theme-tokens.js'
+import { themeTokens } from "../styles/tokens/theme-tokens.js";
 
-/**
- * Composable for theme-aware style objects
- * @returns {Object} Style objects for common patterns
- */
-export function useThemeStyles() {
-  // Text color styles
-  const textPrimary = computed(() => ({
-    color: themeTokens.textPrimary
-  }))
+const themeStyles = {
+  // Text colors
+  textPrimary: { color: themeTokens.textPrimary },
+  textSecondary: { color: themeTokens.textSecondary },
+  textMuted: { color: themeTokens.textMuted },
+  textWhite: { color: themeTokens.textWhite },
 
-  const textSecondary = computed(() => ({
-    color: themeTokens.textSecondary
-  }))
+  // Background colors
+  bgCard: { background: themeTokens.bgCard },
+  bgSidebar: { background: themeTokens.bgSidebar },
+  bgNavbar: { background: themeTokens.bgNavbar },
+  bgMain: { background: themeTokens.bgMain },
+  bgTertiary: { background: themeTokens.bgTertiary },
 
-  const textMuted = computed(() => ({
-    color: themeTokens.textMuted
-  }))
+  // Border colors
+  borderDefault: { borderColor: themeTokens.borderDefault },
+  borderSidebar: { borderColor: themeTokens.borderSidebar },
+  borderMuted: { borderColor: themeTokens.borderMuted },
 
-  const textWhite = computed(() => ({
-    color: themeTokens.textWhite
-  }))
-
-  // Background color styles
-  const bgCard = computed(() => ({
-    background: themeTokens.bgCard
-  }))
-
-  const bgSidebar = computed(() => ({
-    background: themeTokens.bgSidebar
-  }))
-
-  const bgNavbar = computed(() => ({
-    background: themeTokens.bgNavbar
-  }))
-
-  const bgMain = computed(() => ({
-    background: themeTokens.bgMain
-  }))
-
-  const bgTertiary = computed(() => ({
-    background: themeTokens.bgTertiary
-  }))
-
-  // Border color styles
-  const borderDefault = computed(() => ({
-    borderColor: themeTokens.borderDefault
-  }))
-
-  const borderSidebar = computed(() => ({
-    borderColor: themeTokens.borderSidebar
-  }))
-
-  const borderMuted = computed(() => ({
-    borderColor: themeTokens.borderMuted
-  }))
-
-  // Combined layout styles
-  const navbarStyle = computed(() => ({
+  // Layout combinations
+  navbarStyle: {
     background: themeTokens.bgNavbar,
-    borderColor: themeTokens.borderSidebar
-  }))
-
-  const footerStyle = computed(() => ({
+    borderColor: themeTokens.borderSidebar,
+  },
+  footerStyle: {
     background: themeTokens.bgNavbar,
-    borderColor: themeTokens.borderSidebar
-  }))
-
-  const sidebarStyle = computed(() => ({
+    borderColor: themeTokens.borderSidebar,
+  },
+  sidebarStyle: {
     background: themeTokens.bgSidebar,
-    borderColor: themeTokens.borderSidebar
-  }))
+    borderColor: themeTokens.borderSidebar,
+  },
 
-  // Card styles
-  const cardStyle = computed(() => ({
-    background: themeTokens.bgCard
-  }))
-
-  const cardWithBorder = computed(() => ({
+  // Card combinations
+  cardStyle: { background: themeTokens.bgCard },
+  cardWithBorder: {
     background: themeTokens.bgCard,
-    borderColor: themeTokens.borderDefault
-  }))
-
-  const cardWithShadow = computed(() => ({
+    borderColor: themeTokens.borderDefault,
+  },
+  cardWithShadow: {
     background: themeTokens.bgCard,
-    boxShadow: themeTokens.shadowCard
-  }))
+    boxShadow: themeTokens.shadowCard,
+  },
 
   // Input styles
-  const inputStyle = computed(() => ({
+  inputStyle: {
     borderColor: themeTokens.borderMuted,
     background: themeTokens.bgTertiary,
-    color: themeTokens.textPrimary
-  }))
+    color: themeTokens.textPrimary,
+  },
+};
 
-  return {
-    // Text colors
-    textPrimary,
-    textSecondary,
-    textMuted,
-    textWhite,
-    // Backgrounds
-    bgCard,
-    bgSidebar,
-    bgNavbar,
-    bgMain,
-    bgTertiary,
-    // Borders
-    borderDefault,
-    borderSidebar,
-    borderMuted,
-    // Layout combinations
-    navbarStyle,
-    footerStyle,
-    sidebarStyle,
-    // Card combinations
-    cardStyle,
-    cardWithBorder,
-    cardWithShadow,
-    // Input
-    inputStyle
-  }
+export function useThemeStyles() {
+  return themeStyles;
 }
 

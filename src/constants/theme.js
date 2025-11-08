@@ -1,55 +1,35 @@
 /**
  * Theme constants
- * Centralized theme configuration
+ * Centralized theme configuration using CSS variable tokens
  */
 
-import { colors } from '../styles/tokens/colors.js'
-import { spacing } from '../styles/tokens/spacing.js'
-import { typography } from '../styles/tokens/typography.js'
-import { componentRadius } from '../styles/tokens/borders.js'
-import { componentShadows } from '../styles/tokens/shadows.js'
+import { themeTokens } from "../styles/tokens/theme-tokens.js";
 
 /**
- * Theme configuration object
+ * Theme configuration object exposing semantic CSS variables.
  */
 export const theme = {
-  colors: {
-    primary: colors.primary,
-    gray: colors.gray,
-    success: colors.success,
-    warning: colors.warning,
-    danger: colors.danger,
-    info: colors.info
-  },
-  spacing,
-  typography,
-  borderRadius: componentRadius,
-  shadows: componentShadows
-}
+  tokens: themeTokens,
+};
 
 /**
- * Default theme values for components
+ * Default theme surface references for components.
+ * Values reference CSS custom properties to stay in sync with Tailwind theme definitions.
  */
 export const defaultTheme = {
-  primaryColor: colors.primary[700],
-  primaryColorDark: colors.primary[600],
-  textColor: colors.gray[900],
-  textColorDark: colors.gray[100],
-  backgroundColor: colors.gray[50],
-  backgroundColorDark: colors.gray[900],
-  borderColor: colors.gray[200],
-  borderColorDark: colors.gray[700],
-  cardRadius: componentRadius.card,
-  buttonRadius: componentRadius.button,
-  inputRadius: componentRadius.input
-}
+  primaryColor: themeTokens.primary,
+  primaryColorHover: themeTokens.primaryHover,
+  textColor: themeTokens.textPrimary,
+  textColorMuted: themeTokens.textSecondary,
+  backgroundColor: themeTokens.bgPrimary,
+  backgroundColorAlt: themeTokens.bgSecondary,
+  cardBackground: themeTokens.bgCard,
+  borderColor: themeTokens.borderDefault,
+  borderColorMuted: themeTokens.borderMuted,
+  shadowCard: themeTokens.shadowCard,
+};
 
-/**
- * CSS Variable references for theme-aware styling
- * Re-exported from theme-tokens for backward compatibility
- * @deprecated Use themeTokens from '../styles/tokens/theme-tokens' instead
- */
-export { themeTokens as cssVariables } from '../styles/tokens/theme-tokens.js'
+export { themeTokens as cssVariables } from "../styles/tokens/theme-tokens.js";
 
-export default theme
+export default theme;
 
