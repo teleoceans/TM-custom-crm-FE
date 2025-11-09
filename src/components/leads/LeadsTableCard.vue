@@ -1,13 +1,23 @@
 <template>
-  <Card class="mt-6 overflow-hidden border border-gray-300 dark:border-white" :border="false" padding="none">
+  <Card
+    class="mt-6 overflow-hidden border border-gray-300 dark:border-white"
+    :border="false"
+    padding="none"
+  >
     <div class="leads-table-controls">
-      <label for="leads-date-filter" class="sr-only">Filter by date range</label>
+      <label for="leads-date-filter" class="sr-only"
+        >Filter by date range</label
+      >
       <select
         id="leads-date-filter"
         v-model="dateFilter"
         class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-primary-400 dark:focus:ring-primary-900"
       >
-        <option v-for="option in dateFilterOptions" :key="option.value" :value="option.value">
+        <option
+          v-for="option in dateFilterOptions"
+          :key="option.value"
+          :value="option.value"
+        >
           {{ option.label }}
         </option>
       </select>
@@ -15,8 +25,10 @@
     <div class="overflow-x-auto">
       <table class="min-w-full table-fixed divide-y divide-gray-200">
         <thead>
-          <tr class="bg-primary-800 text-left text-xs font-semibold uppercase tracking-wide text-white">
-            <th class="w-14 px-6 py-4">
+          <tr
+            class="bg-primary-800 text-left text-xs font-semibold uppercase tracking-wide text-white"
+          >
+            <th class="w-14 px-6 py-4 whitespace-nowrap">
               <input
                 ref="selectAllCheckbox"
                 type="checkbox"
@@ -26,18 +38,24 @@
               />
               <span class="sr-only">Select all leads</span>
             </th>
-            <th class="w-56 px-6 py-4">Name</th>
-            <th class="w-44 px-6 py-4">Phone Number</th>
-            <th class="w-56 px-6 py-4">Email</th>
-            <th class="w-48 px-6 py-4">Created By</th>
-            <th class="w-40 px-6 py-4">Lead Value</th>
-            <th class="w-48 px-6 py-4">Created On</th>
-            <th class="w-40 px-6 py-4">Stage</th>
+            <th class="w-56 px-6 py-4 whitespace-nowrap">Name</th>
+            <th class="w-44 px-6 py-4 whitespace-nowrap">Phone Number</th>
+            <th class="w-56 px-6 py-4 whitespace-nowrap">Email</th>
+            <th class="w-48 px-6 py-4 whitespace-nowrap">Created By</th>
+            <th class="w-40 px-6 py-4 whitespace-nowrap">Lead Value</th>
+            <th class="w-48 px-6 py-4 whitespace-nowrap">Created On</th>
+            <th class="w-40 px-6 py-4 whitespace-nowrap">Stage</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white dark:divide-white dark:bg-gray-800">
-          <tr v-for="lead in paginatedLeads" :key="lead.id" class="transition hover:bg-gray-50 dark:hover:bg-gray-800">
-            <td class="px-6 py-4">
+        <tbody
+          class="divide-y divide-gray-200 bg-white dark:divide-white dark:bg-gray-800"
+        >
+          <tr
+            v-for="lead in paginatedLeads"
+            :key="lead.id"
+            class="transition hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <td class="px-6 py-4 whitespace-nowrap">
               <input
                 :id="`select-lead-${lead.id}`"
                 v-model="selectedLeadIds"
@@ -47,41 +65,69 @@
               />
               <span class="sr-only">Select {{ lead.name }}</span>
             </td>
-            <td class="px-6 py-4">
-              <span class="font-semibold text-gray-900 dark:text-gray-100">{{ lead.name }}</span>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="font-semibold text-gray-900 text-sm dark:text-gray-100"
+                >{{ lead.name }}</span
+              >
             </td>
-            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+            >
               {{ lead.phone }}
             </td>
-            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+            >
               {{ lead.email }}
             </td>
-            <td class="px-6 py-4">
-              <span class="font-medium text-gray-900 dark:text-gray-100">{{ lead.createdBy }}</span>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="font-medium text-gray-900 text-sm dark:text-gray-100"
+                >{{ lead.createdBy }}</span
+              >
             </td>
-            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100"
+            >
               {{ formatCurrency(lead.leadValue) }}
             </td>
-            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100"
+            >
               {{ formatDate(lead.createdOn) }}
             </td>
-            <td class="px-6 py-4">
-              <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" :class="stageClass(lead.stage)">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                :class="stageClass(lead.stage)"
+              >
                 {{ lead.stage }}
               </span>
             </td>
           </tr>
           <tr v-if="paginatedLeads.length === 0">
-            <td colspan="8" class="px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400">
+            <td
+              colspan="8"
+              class="px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400"
+            >
               <div class="mx-auto max-w-md space-y-2">
-                <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <p
+                  class="text-lg font-semibold text-gray-900 dark:text-gray-100"
+                >
                   No leads match the current search
                 </p>
                 <p>
-                  Adjust your search or reset to see the full list of clients again.
+                  Adjust your search or reset to see the full list of clients
+                  again.
                 </p>
                 <div class="flex justify-center gap-3 pt-2">
-                  <Button variant="secondary" size="sm" @click="handleResetSearch">Reset search</Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    @click="handleResetSearch"
+                    >Reset search</Button
+                  >
                   <Button size="sm" @click="handleAddLead">Add a lead</Button>
                 </div>
               </div>
@@ -91,15 +137,24 @@
       </table>
     </div>
 
-    <div class="flex flex-col items-center justify-between gap-4 border-t border-gray-200 px-6 py-4 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300 md:flex-row">
+    <div
+      class="flex flex-col items-center justify-between gap-4 border-t border-gray-200 px-6 py-4 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300 md:flex-row"
+    >
       <p>
         Showing
-        <span class="font-medium text-gray-900 dark:text-gray-100">{{ showingRange }}</span>
+        <span class="font-medium text-gray-900 dark:text-gray-100">{{
+          showingRange
+        }}</span>
         of
-        <span class="font-medium text-gray-900 dark:text-gray-100">{{ totalRecords }}</span>
+        <span class="font-medium text-gray-900 dark:text-gray-100">{{
+          totalRecords
+        }}</span>
         leads
       </p>
-      <nav class="flex items-center divide-x divide-primary-200 overflow-hidden rounded-md border border-primary-200 text-sm font-medium shadow-sm dark:divide-primary-800 dark:border-primary-800" aria-label="Pagination">
+      <nav
+        class="flex items-center divide-x divide-primary-200 overflow-hidden rounded-md border border-primary-200 text-sm font-medium shadow-sm dark:divide-primary-800 dark:border-primary-800"
+        aria-label="Pagination"
+      >
         <button
           type="button"
           class="flex h-9 w-10 items-center justify-center bg-white text-gray-700 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:text-gray-400 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-primary-900"
@@ -123,7 +178,10 @@
           >
             {{ item.value }}
           </button>
-          <span v-else class="flex h-9 min-w-[2.25rem] items-center justify-center bg-white px-3 text-gray-400 dark:bg-gray-900 dark:text-gray-500">
+          <span
+            v-else
+            class="flex h-9 min-w-[2.25rem] items-center justify-center bg-white px-3 text-gray-400 dark:bg-gray-900 dark:text-gray-500"
+          >
             …
           </span>
         </template>
@@ -227,7 +285,9 @@ const filteredLeads = computed(() => {
 
 const totalRecords = computed(() => filteredLeads.value.length);
 
-const totalPages = computed(() => Math.max(1, Math.ceil(totalRecords.value / pageSize)));
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(totalRecords.value / pageSize))
+);
 
 const paginatedLeads = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
@@ -286,12 +346,18 @@ const paginationItems = computed(() => {
 });
 
 const allSelectedOnPage = computed(
-  () => paginatedLeads.value.length > 0 && paginatedLeads.value.every((lead) => selectedLeadIds.value.includes(lead.id))
+  () =>
+    paginatedLeads.value.length > 0 &&
+    paginatedLeads.value.every((lead) =>
+      selectedLeadIds.value.includes(lead.id)
+    )
 );
 
 const isIndeterminate = computed(() => {
   const pageLeadIds = paginatedLeads.value.map((lead) => lead.id);
-  const selectedCount = pageLeadIds.filter((id) => selectedLeadIds.value.includes(id)).length;
+  const selectedCount = pageLeadIds.filter((id) =>
+    selectedLeadIds.value.includes(id)
+  ).length;
   return selectedCount > 0 && selectedCount < paginatedLeads.value.length;
 });
 
@@ -305,9 +371,13 @@ const toggleSelectAll = (checked) => {
   const pageLeadIds = paginatedLeads.value.map((lead) => lead.id);
 
   if (checked) {
-    selectedLeadIds.value = Array.from(new Set([...selectedLeadIds.value, ...pageLeadIds]));
+    selectedLeadIds.value = Array.from(
+      new Set([...selectedLeadIds.value, ...pageLeadIds])
+    );
   } else {
-    selectedLeadIds.value = selectedLeadIds.value.filter((id) => !pageLeadIds.includes(id));
+    selectedLeadIds.value = selectedLeadIds.value.filter(
+      (id) => !pageLeadIds.includes(id)
+    );
   }
 };
 
@@ -335,7 +405,9 @@ const formatCurrency = (value) =>
 
 watch(filteredLeads, (newLeads) => {
   const validIds = new Set(newLeads.map((lead) => lead.id));
-  selectedLeadIds.value = selectedLeadIds.value.filter((id) => validIds.has(id));
+  selectedLeadIds.value = selectedLeadIds.value.filter((id) =>
+    validIds.has(id)
+  );
 
   if (currentPage.value > totalPages.value) {
     currentPage.value = totalPages.value;
