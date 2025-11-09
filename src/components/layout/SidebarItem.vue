@@ -14,15 +14,15 @@
     >
       <slot name="icon">
         <component
-          v-if="iconComponent"
-          :is="iconComponent"
+          v-if="currentIconComponent"
+          :is="currentIconComponent"
           :style="{
             color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
           }"
           class="h-5 w-5 shrink-0 transition-colors"
         />
         <svg
-          v-else-if="icon"
+          v-else-if="currentIcon"
           :style="{
             color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
           }"
@@ -34,7 +34,7 @@
           fill="currentColor"
           viewBox="0 0 24 24"
         >
-          <path :d="icon" />
+          <path :d="currentIcon" />
         </svg>
       </slot>
       <span 
@@ -58,8 +58,14 @@
       @click="toggle"
     >
       <slot name="icon">
+        <component
+          v-if="currentIconComponent"
+          :is="currentIconComponent"
+          class="h-5 w-5 shrink-0 transition-colors"
+          :style="{ color: 'var(--color-text-muted)' }"
+        />
         <svg
-          v-if="icon"
+          v-else-if="currentIcon"
           :style="{
             color: 'var(--color-text-muted)'
           }"
@@ -71,7 +77,7 @@
           fill="currentColor"
           viewBox="0 0 24 24"
         >
-          <path :d="icon" />
+          <path :d="currentIcon" />
         </svg>
       </slot>
       <span 
@@ -151,6 +157,20 @@ const props = defineProps({
     default: null
   },
   /**
+   * Active state icon component
+   */
+  activeIconComponent: {
+    type: Object,
+    default: null
+  },
+  /**
+   * Active state icon path
+   */
+  activeIcon: {
+    type: String,
+    default: ''
+  },
+  /**
    * Has child items
    */
   hasChildren: {
@@ -166,6 +186,20 @@ const isExpanded = ref(false)
 const isActive = computed(() => {
   if (!props.to) return false
   return route.path === props.to || route.path.startsWith(props.to + '/')
+})
+
+const currentIconComponent = computed(() => {
+  if (isActive.value && props.activeIconComponent) {
+    return props.activeIconComponent
+  }
+  return props.iconComponent
+})
+
+const currentIcon = computed(() => {
+  if (isActive.value && props.activeIcon) {
+    return props.activeIcon
+  }
+  return props.icon
 })
 
 const toggle = () => {
