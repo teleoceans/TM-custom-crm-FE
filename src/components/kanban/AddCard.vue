@@ -26,23 +26,70 @@
           required
         />
         <Input
+          v-model="form.email"
+          :id="formIds.email"
+          type="email"
+          label="Email"
+          placeholder="jane.doe@example.com"
+        />
+        <Input
           v-model="form.phone"
           :id="formIds.phone"
+          type="tel"
           label="Phone Number"
-          placeholder="+1 (555) 000-0000"
+          placeholder="(555) 123-4567"
         />
         <Input
-          v-model="form.contactPerson"
-          :id="formIds.contactPerson"
-          label="Contact Person"
-          placeholder="Assign owner"
+          v-model="form.leadValue"
+          :id="formIds.leadValue"
+          type="number"
+          label="Lead Value"
+          placeholder="5000"
         />
         <Input
-          v-model="form.badge"
-          :id="formIds.badge"
-          label="Badge"
-          placeholder="Optional label"
+          v-model="form.marketValue"
+          :id="formIds.marketValue"
+          type="number"
+          label="Market Value"
+          placeholder="7500"
         />
+        <Input
+          v-model="form.askingPrice"
+          :id="formIds.askingPrice"
+          type="number"
+          label="Asking Price"
+          placeholder="6800"
+        />
+        <div class="space-y-2">
+          <label
+            :for="formIds.address"
+            class="text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Address
+          </label>
+          <textarea
+            :id="formIds.address"
+            v-model="form.address"
+            rows="3"
+            class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition-colors focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+            placeholder="123 Elm Street, Springfield"
+          />
+        </div>
+        <div class="space-y-2">
+          <label
+            :for="formIds.notes"
+            class="text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Notes
+          </label>
+          <textarea
+            :id="formIds.notes"
+            v-model="form.notes"
+            rows="3"
+            class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition-colors focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+            placeholder="Add context about this lead..."
+          />
+        </div>
 
         <div class="flex items-center justify-end gap-3">
           <Button type="button" variant="ghost" @click="closeModal">
@@ -92,9 +139,13 @@ const submitLabel = computed(() =>
 
 const form = reactive({
   name: "",
+  email: "",
   phone: "",
-  contactPerson: "",
-  badge: "",
+  leadValue: "",
+  marketValue: "",
+  askingPrice: "",
+  address: "",
+  notes: "",
 });
 
 const errors = reactive({
@@ -104,9 +155,13 @@ const errors = reactive({
 const leadNameInput = ref(null);
 const formIds = {
   name: `lead-name-${Math.random().toString(36).slice(2, 8)}`,
+  email: `lead-email-${Math.random().toString(36).slice(2, 8)}`,
   phone: `lead-phone-${Math.random().toString(36).slice(2, 8)}`,
-  contactPerson: `lead-contact-${Math.random().toString(36).slice(2, 8)}`,
-  badge: `lead-badge-${Math.random().toString(36).slice(2, 8)}`,
+  leadValue: `lead-value-${Math.random().toString(36).slice(2, 8)}`,
+  marketValue: `lead-market-${Math.random().toString(36).slice(2, 8)}`,
+  askingPrice: `lead-asking-${Math.random().toString(36).slice(2, 8)}`,
+  address: `lead-address-${Math.random().toString(36).slice(2, 8)}`,
+  notes: `lead-notes-${Math.random().toString(36).slice(2, 8)}`,
 };
 
 const clearErrors = () => {
@@ -115,9 +170,13 @@ const clearErrors = () => {
 
 const resetForm = () => {
   form.name = "";
+  form.email = "";
   form.phone = "";
-  form.contactPerson = "";
-  form.badge = "";
+  form.leadValue = "";
+  form.marketValue = "";
+  form.askingPrice = "";
+  form.address = "";
+  form.notes = "";
 };
 
 const openCreateModal = () => {
@@ -134,9 +193,22 @@ const openCreateModal = () => {
 const openEditModal = (card) => {
   if (!card) return;
   form.name = card.name || card.title || "";
+  form.email = card.email || "";
   form.phone = card.phone || "";
-  form.contactPerson = card.contactPerson || "";
-  form.badge = card.badge || "";
+  form.leadValue =
+    card.leadValue !== undefined && card.leadValue !== null
+      ? String(card.leadValue)
+      : "";
+  form.marketValue =
+    card.marketValue !== undefined && card.marketValue !== null
+      ? String(card.marketValue)
+      : "";
+  form.askingPrice =
+    card.askingPrice !== undefined && card.askingPrice !== null
+      ? String(card.askingPrice)
+      : "";
+  form.address = card.address || "";
+  form.notes = card.notes || "";
   editingCardId.value = card.id;
   mode.value = "edit";
   clearErrors();
@@ -170,23 +242,29 @@ const handleSubmit = () => {
     return;
   }
 
+  const trimValue = (value) => (value ?? "").toString().trim();
+  const payload = {
+    name: trimValue(form.name),
+    email: trimValue(form.email),
+    phone: trimValue(form.phone),
+    leadValue: trimValue(form.leadValue),
+    marketValue: trimValue(form.marketValue),
+    askingPrice: trimValue(form.askingPrice),
+    address: trimValue(form.address),
+    notes: trimValue(form.notes),
+  };
+
   if (mode.value === "edit" && editingCardId.value) {
     const updatedCard = {
       id: editingCardId.value,
       column: props.column,
-      name: form.name.trim(),
-      phone: form.phone.trim(),
-      contactPerson: form.contactPerson.trim(),
-      badge: form.badge.trim(),
+      ...payload,
     };
     emit("update-card", updatedCard);
   } else {
     const newCard = {
       column: props.column,
-      name: form.name.trim(),
-      phone: form.phone.trim(),
-      contactPerson: form.contactPerson.trim(),
-      badge: form.badge.trim(),
+      ...payload,
       id: Math.random().toString(),
     };
     emit("add-card", newCard);
