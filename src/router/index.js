@@ -23,6 +23,11 @@ const routes = [
         component: () => import("../views/Leads.vue"),
       },
       {
+        path: "leads/new",
+        name: "CreateLead",
+        component: () => import("../views/CreateLead.vue"),
+      },
+      {
         path: "user-management",
         name: "UserManagement",
         component: () => import("../views/UserManagement.vue"),
