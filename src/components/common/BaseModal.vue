@@ -10,7 +10,7 @@
           @click="handleOverlayClick"
         />
         <div
-          class="relative z-10 w-full rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
+          class="relative z-10 w-full max-h-[90vh] overflow-y-auto rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800"
           :class="maxWidth"
           role="dialog"
           aria-modal="true"

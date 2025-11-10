@@ -1,11 +1,5 @@
 <template>
-  <svg
-    class="h-5 w-5"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-  >
+  <BaseIcon class="h-5 w-5" viewBox="0 0 24 24" fill="none">
     <path
       stroke="currentColor"
       stroke-linecap="round"
@@ -13,13 +7,10 @@
       stroke-width="2"
       d="M12 19V5m0 14-4-4m4 4 4-4"
     />
-  </svg>
+  </BaseIcon>
 </template>
 
 <script setup>
-/**
- * Arrow Down Icon Component
- * @component
- */
+import BaseIcon from './BaseIcon.vue'
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full overflow-x-auto p-4">
+  <div class="h-full w-full overflow-x-auto py-4">
     <div class="flex h-full w-full flex-row gap-2">
       <KanbanColumn
         v-for="columnConfig in columns"

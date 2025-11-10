@@ -19,27 +19,47 @@
       <div class="h-full overflow-y-auto px-3 py-4">
         <ul class="space-y-2">
           <!-- Dashboard -->
-          <SidebarItem to="/dashboard" :icon-component="DashboardIcon">
+          <SidebarItem
+            to="/dashboard"
+            :icon-component="DashboardOutlineIcon"
+            :active-icon-component="DashboardSolidIcon"
+          >
             Dashboard
           </SidebarItem>
 
           <!-- Pipeline -->
-          <SidebarItem to="/pipeline" :icon-component="PipelineIcon">
+          <SidebarItem
+            to="/pipeline"
+            :icon-component="PipelineOutlineIcon"
+            :active-icon-component="PipelineSolidIcon"
+          >
             Pipeline
           </SidebarItem>
 
           <!-- Leads -->
-          <SidebarItem to="/leads" :icon-component="LeadsIcon">
+          <SidebarItem
+            to="/leads"
+            :icon-component="LeadsOutlineIcon"
+            :active-icon-component="LeadsSolidIcon"
+          >
             Leads
           </SidebarItem>
 
           <!-- User Management -->
-          <SidebarItem to="/user-management" :icon-component="UserManagementIcon">
+          <SidebarItem
+            to="/user-management"
+            :icon-component="UserManagementOutlineIcon"
+            :active-icon-component="UserManagementSolidIcon"
+          >
             User Management
           </SidebarItem>
 
           <!-- Tenant Management -->
-          <SidebarItem to="/tenant-management" :icon-component="TenantManagementIcon">
+          <SidebarItem
+            to="/tenant-management"
+            :icon-component="TenantManagementOutlineIcon"
+            :active-icon-component="TenantManagementSolidIcon"
+          >
             Tenant Management
           </SidebarItem>
 
@@ -67,27 +87,47 @@
     <div class="h-full overflow-y-auto px-3 py-4">
       <ul class="space-y-2">
         <!-- Dashboard -->
-        <SidebarItem to="/dashboard" :icon-component="DashboardIcon">
+        <SidebarItem
+          to="/dashboard"
+          :icon-component="DashboardOutlineIcon"
+          :active-icon-component="DashboardSolidIcon"
+        >
           Dashboard
         </SidebarItem>
 
         <!-- Pipeline -->
-        <SidebarItem to="/pipeline" :icon-component="PipelineIcon">
+        <SidebarItem
+          to="/pipeline"
+          :icon-component="PipelineOutlineIcon"
+          :active-icon-component="PipelineSolidIcon"
+        >
           Pipeline
         </SidebarItem>
 
         <!-- Leads -->
-        <SidebarItem to="/leads" :icon-component="LeadsIcon">
+        <SidebarItem
+          to="/leads"
+          :icon-component="LeadsOutlineIcon"
+          :active-icon-component="LeadsSolidIcon"
+        >
           Leads
         </SidebarItem>
 
         <!-- User Management -->
-        <SidebarItem to="/user-management" :icon-component="UserManagementIcon">
+        <SidebarItem
+          to="/user-management"
+          :icon-component="UserManagementOutlineIcon"
+          :active-icon-component="UserManagementSolidIcon"
+        >
           User Management
         </SidebarItem>
 
         <!-- Tenant Management -->
-        <SidebarItem to="/tenant-management" :icon-component="TenantManagementIcon">
+        <SidebarItem
+          to="/tenant-management"
+          :icon-component="TenantManagementOutlineIcon"
+          :active-icon-component="TenantManagementSolidIcon"
+        >
           Tenant Management
         </SidebarItem>
 
@@ -107,11 +147,16 @@ import SidebarItem from './SidebarItem.vue'
 import { useSidebar } from '../../composables/useSidebar'
 import { useResponsive } from '../../composables/useResponsive'
 
-import DashboardIcon from '../icons/Dashboard.vue'
-import PipelineIcon from '../icons/Pipeline.vue'
-import LeadsIcon from '../icons/Leads.vue'
-import UserManagementIcon from '../icons/userManagement.vue'
-import TenantManagementIcon from '../icons/tenantManagement.vue'
+import DashboardOutlineIcon from '../icons/DashboardOutline.vue'
+import DashboardSolidIcon from '../icons/Dashboard.vue'
+import PipelineOutlineIcon from '../icons/PipelineOutline.vue'
+import PipelineSolidIcon from '../icons/Pipeline.vue'
+import LeadsOutlineIcon from '../icons/Leads.vue'
+import LeadsSolidIcon from '../icons/LeadsSolid.vue'
+import UserManagementOutlineIcon from '../icons/userManagement.vue'
+import UserManagementSolidIcon from '../icons/UserManagementSolid.vue'
+import TenantManagementOutlineIcon from '../icons/tenantManagement.vue'
+import TenantManagementSolidIcon from '../icons/TenantManagementSolid.vue'
 import SettingsIcon from '../icons/Settings.vue'
 
 const { sidebarStyle } = useThemeStyles()

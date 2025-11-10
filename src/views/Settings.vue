@@ -53,23 +53,16 @@ import { ref } from 'vue'
 import Card from '../components/common/Card.vue'
 import Button from '../components/common/Button.vue'
 import Input from '../components/common/Input.vue'
+import {
+  mockProfile,
+  mockNotifications,
+  mockSecurity,
+} from '../mock/settings.js'
 
-const profile = ref({
-  name: 'John Doe',
-  email: 'john@example.com',
-  phone: '+1 234 567 8900'
-})
+const profile = ref({ ...mockProfile })
 
-const notifications = ref({
-  email: true,
-  sms: false,
-  push: true
-})
+const notifications = ref({ ...mockNotifications })
 
-const security = ref({
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-})
+const security = ref({ ...mockSecurity })
 </script>
 

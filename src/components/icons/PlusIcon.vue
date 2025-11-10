@@ -1,10 +1,8 @@
 <template>
-  <svg
+  <BaseIcon
     class="h-4 w-4"
-    aria-hidden="true"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
     viewBox="0 0 24 24"
+    fill="none"
     stroke="currentColor"
   >
     <path
@@ -13,13 +11,10 @@
       stroke-width="2"
       d="M12 4v16m8-8H4"
     />
-  </svg>
+  </BaseIcon>
 </template>
 
 <script setup>
-/**
- * Plus Icon Component
- * @component
- */
+import BaseIcon from './BaseIcon.vue'
 </script>
 

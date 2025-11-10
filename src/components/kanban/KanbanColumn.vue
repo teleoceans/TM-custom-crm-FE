@@ -27,7 +27,7 @@
       ]"
     >
       <!-- Cards -->
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-1">
         <KanbanCard
           v-for="card in filteredCards"
           :key="card.id"
@@ -105,14 +105,17 @@ const handleCardDragStart = (card) => {
   // Card drag start is handled by the card itself
 };
 
-const handleEditCard = (card) => {
+const handleEditCard = (cardId) => {
+  const cardData = props.cards.find((c) => c.id === cardId);
+  if (!cardData) return;
+
   if (
     addCardRef.value &&
     typeof addCardRef.value.openEditModal === "function"
   ) {
-    addCardRef.value.openEditModal(card);
+    addCardRef.value.openEditModal(cardData);
   } else {
-    emit("update-card", card);
+    emit("update-card", cardData);
   }
 };
 
