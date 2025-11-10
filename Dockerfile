@@ -1,5 +1,4 @@
-# Multi-stage Dockerfile optimized for Nuxt 3 with proper caching
-# This avoids Nix builds entirely by using Node.js base images
+# Multi-stage Dockerfile optimized for Vue 3 + Vite with proper caching
 
 # Stage 1: Dependencies - Cache node_modules layer
 FROM node:20-alpine AS deps
@@ -30,59 +29,48 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build arguments for build-time configuration
-ARG NUXT_PUBLIC_API_BASE
-ARG CLOUDINARY_BASE_URL
 ARG NODE_ENV=production
+ARG VITE_API_BASE_URL
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE:-https://backend.locallyeg.com}
-ENV CLOUDINARY_BASE_URL=${CLOUDINARY_BASE_URL}
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 
-# Build the Nuxt application
+# Build the Vue application with Vite
 RUN npm run build
 
-# Stage 3: Runner - Production image
-FROM node:20-alpine AS runner
-
-WORKDIR /app
+# Stage 3: Runner - Production image with nginx
+FROM nginx:alpine AS runner
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init curl
 
-# Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nuxtjs
-
 # Copy built application from builder
-# Nuxt 3/Nitro bundles all dependencies in .output, so we only need the output
-COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
-COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
+# Vite outputs to dist directory
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Nuxt 3's Nitro bundles dependencies in .output/server/node_modules
-# If needed, install only production dependencies as fallback
-# This is typically not needed as Nitro bundles everything, but kept for compatibility
-RUN npm ci --omit=dev --prefer-offline --no-audit 2>/dev/null || true
+# Copy nginx configuration (optional - nginx default config works for SPA)
+# For Vue Router in history mode, you may need a custom nginx config
+RUN echo 'server { \
+    listen 80; \
+    server_name _; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Switch to non-root user
-USER nuxtjs
-
-# Expose port (Nuxt defaults to 3000)
-EXPOSE 3000
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOST=0.0.0.0
-ENV NITRO_PRESET=node-server
+# Expose port 80
+EXPOSE 80
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the application
-CMD ["node", ".output/server/index.mjs"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
 
