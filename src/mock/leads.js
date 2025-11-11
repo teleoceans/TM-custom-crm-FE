@@ -7,6 +7,8 @@ export const baseLeads = [
     createdBy: "Olivia Martinez",
     team: "Enterprise Sales",
     leadValue: 18500,
+    marketValue: 21500,
+    askingPrice: 17500,
     stage: "New lead",
   },
   {
@@ -17,6 +19,8 @@ export const baseLeads = [
     createdBy: "Noah Patel",
     team: "Mid-Market",
     leadValue: 12400,
+    marketValue: 13900,
+    askingPrice: 11900,
     stage: "Contacted lead",
   },
   {
@@ -27,6 +31,8 @@ export const baseLeads = [
     createdBy: "Mia Chen",
     team: "Enterprise Sales",
     leadValue: 31200,
+    marketValue: 34100,
+    askingPrice: 30500,
     stage: "Won lead",
   },
   {
@@ -37,6 +43,8 @@ export const baseLeads = [
     createdBy: "Ethan Wright",
     team: "SMB",
     leadValue: 9800,
+    marketValue: 11400,
+    askingPrice: 9400,
     stage: "Lost lead",
   },
   {
@@ -47,6 +55,8 @@ export const baseLeads = [
     createdBy: "Charlotte Rivera",
     team: "Enterprise Sales",
     leadValue: 25600,
+    marketValue: 28200,
+    askingPrice: 24800,
     stage: "Completed",
   },
 ];
@@ -65,13 +75,20 @@ export function createMockLeads(total = 1000) {
 
     records.push({
       id: `LEAD-${3001 + index}`,
-      name: index < baseLeads.length ? sample.name : `${sample.name} #${index + 1}`,
+      name:
+        index < baseLeads.length ? sample.name : `${sample.name} #${index + 1}`,
       company: sample.company,
       phone: sample.phone,
       email: `${localPart}.${index + 1}@${domain}`,
       createdBy: sample.createdBy,
       team: sample.team,
       leadValue: sample.leadValue + (index % 5) * 150,
+      marketValue:
+        (sample.marketValue ?? Math.round(sample.leadValue * 1.1)) +
+        (index % 5) * 200,
+      askingPrice:
+        (sample.askingPrice ?? Math.round(sample.leadValue * 0.95)) +
+        (index % 5) * 150,
       createdOn: recordDate.toISOString().split("T")[0],
       stage: sample.stage,
     });
