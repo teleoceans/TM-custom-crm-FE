@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="mx-auto w-full max-w-full px-4 py-8">
+    <div class="mx-auto w-full max-w-full  py-4">
       <form
         class="grid gap-6 overflow-hidden rounded-xl border border-gray-300 bg-white p-6 shadow-sm dark:border-white dark:bg-gray-800"
         @submit.prevent="handleSubmit"
