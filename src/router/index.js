@@ -28,6 +28,11 @@ const routes = [
         component: () => import("../views/CreateLead.vue"),
       },
       {
+        path: "leads/:leadId",
+        name: "LeadInfo",
+        component: () => import("../views/LeadInfo.vue"),
+      },
+      {
         path: "user-management",
         name: "UserManagement",
         component: () => import("../views/UserManagement.vue"),
