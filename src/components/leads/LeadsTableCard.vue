@@ -53,7 +53,8 @@
           <tr
             v-for="lead in paginatedLeads"
             :key="lead.id"
-            class="transition hover:bg-gray-50 dark:hover:bg-gray-800"
+            class="cursor-pointer transition hover:bg-gray-50 dark:hover:bg-gray-800"
+            @click="handleViewLead(lead.id)"
           >
             <td class="px-6 py-4 whitespace-nowrap">
               <input
@@ -62,6 +63,7 @@
                 type="checkbox"
                 :value="lead.id"
                 class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                @click.stop
               />
               <span class="sr-only">Select {{ lead.name }}</span>
             </td>
@@ -223,7 +225,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["reset-search", "add-lead"]);
+const emit = defineEmits(["reset-search", "add-lead", "view-lead"]);
 
 const dateFilter = ref("last-30-days");
 const dateFilterOptions = [
@@ -387,6 +389,11 @@ const handleResetSearch = () => {
 
 const handleAddLead = () => {
   emit("add-lead");
+};
+
+const handleViewLead = (leadId) => {
+  if (!leadId) return;
+  emit("view-lead", leadId);
 };
 
 const formatDate = (date) =>
