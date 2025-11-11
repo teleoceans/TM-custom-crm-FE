@@ -59,6 +59,7 @@
       <KanbanBoard
         :initial-cards="defaultCards"
         @cards-updated="handleCardsUpdated"
+        @card-open="handleCardOpen"
       />
     </div>
   </div>
@@ -66,10 +67,12 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import KanbanBoard from "../components/kanban/KanbanBoard.vue";
 import { mockPipelineCards } from "../mock/pipeline.js";
 
 // Default sample data
+const router = useRouter();
 const defaultCards = ref([...mockPipelineCards]);
 
 const handleCardsUpdated = (updatedCards) => {
@@ -84,6 +87,11 @@ watch(searchTerm, (value) => {
   // Placeholder for future integration with filtering logic
   console.log("Pipeline search term:", value);
 });
+
+const handleCardOpen = (leadId) => {
+  if (!leadId) return;
+  router.push({ name: "LeadInfo", params: { leadId } });
+};
 </script>
 
 <style scoped>
