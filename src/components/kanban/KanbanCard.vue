@@ -4,6 +4,8 @@
     <div
       :draggable="true"
       @dragstart="handleDragStart"
+      @dragend="handleDragEnd"
+      @click="handleCardClick"
       class="flex cursor-grab flex-col items-start gap-4 rounded-lg bg-white p-4 shadow-sm active:cursor-grabbing dark:bg-gray-800"
       :style="cardStyle"
     >
@@ -15,7 +17,11 @@
         >
           {{ name || title }}
         </h3>
-        <ActionsMenu :actions="actionsMenuItems" @select="handleMenuSelect" />
+        <ActionsMenu
+          :actions="actionsMenuItems"
+          @click.stop
+          @select="handleMenuSelect"
+        />
       </div>
 
       <!-- Card Body (Phone Number) -->
@@ -63,7 +69,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useThemeStyles } from "../../composables/useThemeStyles";
 import ActionsMenu from "../common/ActionsMenu.vue";
 import UserIcon from "../icons/UserIcon.vue";
@@ -104,7 +110,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["edit", "drag-start"]);
+const emit = defineEmits(["edit", "delete", "drag-start", "open"]);
+
+const isDragging = ref(false);
 
 const { textPrimary, textSecondary, cardStyle } = useThemeStyles();
 
@@ -124,11 +132,24 @@ const handleMenuSelect = (value) => {
 const handleDragStart = (e) => {
   e.dataTransfer.setData("cardId", props.id);
   e.dataTransfer.effectAllowed = "move";
+  isDragging.value = true;
   emit("drag-start", {
     id: props.id,
     title: props.title || props.name,
     column: props.column,
   });
+};
+
+const handleDragEnd = () => {
+  isDragging.value = false;
+};
+
+const handleCardClick = () => {
+  if (isDragging.value) {
+    isDragging.value = false;
+    return;
+  }
+  emit("open", props.id);
 };
 </script>
 

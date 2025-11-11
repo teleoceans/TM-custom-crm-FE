@@ -14,6 +14,7 @@
         @delete-card="handleDeleteCard"
         @edit-stage="handleEditStage"
         @delete-stage="handleDeleteStage"
+        @open-card="emit('card-open', $event)"
       />
       <AddStageButton @click="openStageModal" />
     </div>
@@ -72,7 +73,12 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["cards-updated", "card-edited", "stages-updated"]);
+const emit = defineEmits([
+  "cards-updated",
+  "card-edited",
+  "stages-updated",
+  "card-open",
+]);
 
 const cards = ref([...props.initialCards]);
 
