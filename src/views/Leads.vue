@@ -99,6 +99,7 @@
       :search-term="searchTerm"
       @reset-search="resetSearch"
       @add-lead="openCreateLead"
+      @view-lead="goToLead"
     />
   </div>
 </template>
@@ -119,6 +120,11 @@ const resetSearch = () => {
 
 const openCreateLead = () => {
   router.push("/leads/new");
+};
+
+const goToLead = (leadId) => {
+  if (!leadId) return;
+  router.push({ name: "LeadInfo", params: { leadId } });
 };
 </script>
 
