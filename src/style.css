@@ -5,6 +5,16 @@
 @source "../node_modules/flowbite";
 @source "../node_modules/flowbite-datepicker";
 
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
