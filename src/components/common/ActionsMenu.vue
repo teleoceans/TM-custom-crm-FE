@@ -2,7 +2,7 @@
   <div class="relative" ref="container">
     <button
       type="button"
-      class="rounded-full p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+      :class="triggerButtonClasses"
       @click="toggleMenu"
       ref="trigger"
       aria-haspopup="menu"
@@ -63,6 +63,15 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  triggerVariant: {
+    type: String,
+    default: "default",
+    validator: (value) => ["default", "plain"].includes(value),
+  },
+  triggerClass: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["select", "open", "close"]);
@@ -82,6 +91,39 @@ const normalizedActions = computed(() =>
     tone: action.tone || "default",
   }))
 );
+
+const triggerButtonClasses = computed(() => {
+  const classes = [
+    "rounded-full",
+    "transition-colors",
+    "focus:outline-none",
+    "cursor-pointer",
+  ];
+
+  if (props.triggerVariant === "plain") {
+    classes.push(
+      "p-0",
+      "text-gray-400",
+      "hover:text-gray-600",
+      "dark:hover:text-gray-200"
+    );
+  } else {
+    classes.push(
+      "p-2",
+      "text-gray-400",
+      "hover:bg-gray-100",
+      "hover:text-gray-600",
+      "dark:hover:bg-gray-700",
+      "dark:hover:text-gray-200"
+    );
+  }
+
+  if (props.triggerClass) {
+    classes.push(props.triggerClass);
+  }
+
+  return classes;
+});
 
 const toggleMenu = () => {
   open.value = !open.value;
