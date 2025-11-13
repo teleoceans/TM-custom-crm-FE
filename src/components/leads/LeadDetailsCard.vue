@@ -51,6 +51,7 @@ defineProps({
   }
 
   .lead-card__row {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
@@ -70,12 +71,11 @@ defineProps({
   border-bottom: 1px solid #e5e7eb;
 }
 
-.lead-card__row {
-  display: flex;
-  flex-direction: row;
+ .lead-card__row {
+  display: grid;
+  grid-template-columns: minmax(9rem, auto) 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
   padding: 12px 0;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -117,7 +117,7 @@ defineProps({
   line-height: 1.5;
   color: #111928;
   font-weight: 500;
-  text-align: right;
+  text-align: left;
   flex: 1;
 }
 
