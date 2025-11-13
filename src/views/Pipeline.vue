@@ -35,23 +35,22 @@
           />
         </div>
 
-        <button
-          type="button"
-          class="inline-flex items-center self-start rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-        >
-          <svg
-            class="me-2 h-4 w-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M5 3a2 2 0 0 0-1.5 3.3l5.4 6v5c0 .4.3.9.6 1.1l3.1 2.3c1 .7 2.5 0 2.5-1.2v-7.1l5.4-6C21.6 5 20.7 3 19 3H5Z"
-            />
-          </svg>
+        <Button variant="muted" size="sm" class="self-start focus:z-10">
+          <template #icon-left>
+            <svg
+              class="h-4 w-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M5 3a2 2 0 0 0-1.5 3.3l5.4 6v5c0 .4.3.9.6 1.1l3.1 2.3c1 .7 2.5 0 2.5-1.2v-7.1l5.4-6C21.6 5 20.7 3 19 3H5Z"
+              />
+            </svg>
+          </template>
           Filter
-        </button>
+        </Button>
       </div>
     </div>
 
@@ -70,6 +69,7 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import KanbanBoard from "../components/kanban/KanbanBoard.vue";
 import { mockPipelineCards } from "../mock/pipeline.js";
+import Button from "../components/common/Button.vue";
 
 // Default sample data
 const router = useRouter();
