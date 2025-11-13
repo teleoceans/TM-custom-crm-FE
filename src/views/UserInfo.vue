@@ -1,0 +1,233 @@
+<template>
+  <div class="flex w-full flex-col -mt-6">
+    <div
+      class="user-info-header grid grid-cols-12 gap-4 border-b border-gray-200 bg-white pb-4 dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div
+        class="col-span-full flex flex-col gap-3 px-4 pt-4 md:flex-row md:items-center md:justify-between"
+      >
+        <div class="relative w-full max-w-md">
+          <label for="user-info-search" class="sr-only">Search users</label>
+          <div
+            class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
+          >
+            <svg
+              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            id="user-info-search"
+            v-model="searchTerm"
+            type="text"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-9 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+            placeholder="Search users"
+          />
+        </div>
+        <div class="flex items-center gap-3">
+          <Button variant="muted" size="sm">
+            <template #icon-left>
+              <svg
+                class="h-4 w-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M5 3a2 2 0 0 0-1.5 3.3l5.4 6v5c0 .4.3.9.6 1.1l3.1 2.3c1 .7 2.5 0 2.5-1.2v-7.1l5.4-6C21.6 5 20.7 3 19 3H5Z"
+                />
+              </svg>
+            </template>
+            Filter
+          </Button>
+          <Button variant="muted" size="sm" @click="handleInviteUser">
+            <template #icon-left>
+              <svg
+                class="h-4 w-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </template>
+            New User
+          </Button>
+          <Button variant="muted" size="sm">
+            <template #icon-left>
+              <svg
+                class="h-4 w-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 3a1 1 0 0 1 .993.883L13 4v8.585l1.293-1.292a1 1 0 0 1 1.32-.083l.094.083a1 1 0 0 1 .083 1.32l-.083.094-3 3a1 1 0 0 1-1.32.083l-.094-.083-3-3a1 1 0 0 1 1.32-1.497l.094.083L11 12.585V4a1 1 0 0 1 1-1Z"
+                />
+                <path
+                  d="M5 15a1 1 0 0 1 .883.993L6 16v2h12v-2a1 1 0 0 1 1.993-.117L20 16v3a1 1 0 0 1-.883.993L19 20H5a1 1 0 0 1-.993-.883L4 19v-3a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </template>
+            Export
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="grid grid-cols-1 gap-4 py-6 lg:grid-cols-12 lg:items-start lg:gap-4"
+    >
+      <div class="flex flex-col gap-4 lg:col-span-5">
+        <Card title="User Info" padding="responsive">
+          <dl class="space-y-4">
+            <div
+              v-for="field in profileFields"
+              :key="field.key"
+              class="grid w-full grid-cols-[minmax(10rem,auto)_1fr] items-center gap-x-10 gap-y-2 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700"
+            >
+              <div class="flex items-center gap-2">
+                <component
+                  :is="field.icon"
+                  v-if="field.icon"
+                  class="h-4 w-4 text-gray-500 dark:text-gray-400"
+                />
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {{ field.label }}
+                </dt>
+              </div>
+              <dd class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {{ field.value }}
+              </dd>
+            </div>
+          </dl>
+        </Card>
+      </div>
+
+      <div class="flex flex-col gap-4 lg:col-span-7">
+        <Card title="Permissions Allowed" padding="responsive">
+          <div class="space-y-6">
+            <div
+              v-for="group in permissionGroups"
+              :key="group.id"
+              class="space-y-2 rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+            >
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  {{ group.label }}
+                </h4>
+                <button
+                  type="button"
+                  class="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  aria-label="Edit permission group"
+                >
+                  <EditIcon />
+                </button>
+              </div>
+              <ul class="flex flex-wrap gap-2">
+                <li
+                  v-for="option in group.options"
+                  :key="option.id"
+                  class="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-600 dark:bg-primary-900/20 dark:text-primary-300"
+                >
+                  {{ option.label }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Button from "../components/common/Button.vue";
+import Card from "../components/common/Card.vue";
+import EditIcon from "../components/icons/EditIcon.vue";
+import useDateFormatter from "../composables/useDateFormatter";
+import {
+  defaultUserDetailId,
+  mockUserDetailsById,
+  mockUserPermissionGroups,
+} from "../mock/users";
+
+const router = useRouter();
+const route = useRoute();
+const searchTerm = ref("");
+
+const browserLocale =
+  typeof window !== "undefined" && window.navigator?.language
+    ? window.navigator.language
+    : "en-US";
+
+const { formatDateTime } = useDateFormatter({ dateStyle: "medium" }, browserLocale);
+
+const fallbackDetail = mockUserDetailsById[defaultUserDetailId];
+
+const detail = computed(() => {
+  const id = route.params.userId?.toString();
+  return (id && mockUserDetailsById[id]) || fallbackDetail;
+});
+
+const profileFields = computed(() => {
+  const profile = detail.value?.profile;
+  if (!profile) return [];
+  return [
+    { key: "name", label: "Name", value: profile.name },
+    { key: "role", label: "Role", value: profile.role },
+    { key: "email", label: "Email", value: profile.email },
+    { key: "password", label: "Password", value: profile.password },
+    { key: "phone", label: "Phone Number", value: profile.phone },
+    {
+      key: "addedOn",
+      label: "Added on",
+      value: formatDateTime(profile.addedOn, { dateStyle: "short" }),
+    },
+  ];
+});
+
+const permissionGroups = computed(() => {
+  const permissions = detail.value?.permissions ?? {};
+  return mockUserPermissionGroups.map((group) => {
+    const selected = permissions[group.id] ?? [];
+    const selectedOptions = group.options.filter((option) =>
+      selected.includes(option.id)
+    );
+    return {
+      id: group.id,
+      label: group.label,
+      options: selectedOptions,
+    };
+  });
+});
+
+const handleInviteUser = () => {
+  router.push("/user-management/new");
+};
+</script>
+
+<style scoped>
+.user-info-header {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+</style>
+
