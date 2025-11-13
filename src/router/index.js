@@ -38,6 +38,16 @@ const routes = [
         component: () => import("../views/UserManagement.vue"),
       },
       {
+        path: "user-management/new",
+        name: "CreateUser",
+        component: () => import("../views/CreateUser.vue"),
+      },
+      {
+        path: "user-management/:userId",
+        name: "UserInfo",
+        component: () => import("../views/UserInfo.vue"),
+      },
+      {
         path: "tenant-management",
         name: "TenantManagement",
         component: () => import("../views/TenantManagement.vue"),
