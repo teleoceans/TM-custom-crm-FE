@@ -93,13 +93,13 @@
     <div
       class="grid grid-cols-1 gap-4 py-6 lg:grid-cols-12 lg:items-start lg:gap-4"
     >
-      <div class="flex flex-col gap-4 lg:col-span-5">
-        <Card title="User Info" padding="responsive">
+      <div class="flex flex-col gap-4 lg:col-span-6">
+        <Card title="User Info" padding="responsive" class="user-info-card">
           <dl class="space-y-4">
             <div
               v-for="field in profileFields"
               :key="field.key"
-              class="grid w-full grid-cols-[minmax(10rem,auto)_1fr] items-center gap-x-10 gap-y-2 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700"
+              class="grid w-full grid-cols-[140px_1fr] items-start gap-x-4 gap-y-3 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700"
             >
               <div class="flex items-center gap-2">
                 <component
@@ -107,11 +107,11 @@
                   v-if="field.icon"
                   class="h-4 w-4 text-gray-500 dark:text-gray-400"
                 />
-                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                <dt class="text-sm text-gray-500 dark:text-gray-400">
                   {{ field.label }}
                 </dt>
               </div>
-              <dd class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">
                 {{ field.value }}
               </dd>
             </div>
@@ -119,35 +119,32 @@
         </Card>
       </div>
 
-      <div class="flex flex-col gap-4 lg:col-span-7">
-        <Card title="Permissions Allowed" padding="responsive">
-          <div class="space-y-6">
+      <div class="flex flex-col gap-4 lg:col-span-6">
+        <Card title="Permissions Allowed" padding="responsive" class="permissions-card">
+          <div class="space-y-4">
             <div
-              v-for="group in permissionGroups"
+              v-for="(group, index) in permissionGroups"
               :key="group.id"
-              class="space-y-2 rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+              class="space-y-2"
             >
-              <div class="flex items-center justify-between">
-                <h4 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {{ group.label }}
-                </h4>
-                <button
-                  type="button"
-                  class="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  aria-label="Edit permission group"
-                >
-                  <EditIcon />
-                </button>
-              </div>
-              <ul class="flex flex-wrap gap-2">
-                <li
-                  v-for="option in group.options"
-                  :key="option.id"
-                  class="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-600 dark:bg-primary-900/20 dark:text-primary-300"
-                >
+              <h4 class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {{ group.label }}
+              </h4>
+              <ul
+                v-if="group.options.length > 0"
+                class="space-y-1 text-sm text-gray-900 dark:text-gray-100"
+              >
+                <li v-for="option in group.options" :key="option.id">
                   {{ option.label }}
                 </li>
               </ul>
+              <p v-else class="text-sm text-gray-500 dark:text-gray-400">
+                None
+              </p>
+              <div
+                v-if="index < permissionGroups.length - 1"
+                class="border-b border-gray-200 dark:border-gray-700"
+              ></div>
             </div>
           </div>
         </Card>
@@ -161,7 +158,6 @@ import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Button from "../components/common/Button.vue";
 import Card from "../components/common/Card.vue";
-import EditIcon from "../components/icons/EditIcon.vue";
 import useDateFormatter from "../composables/useDateFormatter";
 import {
   defaultUserDetailId,
@@ -228,6 +224,22 @@ const handleInviteUser = () => {
 .user-info-header {
   margin-left: -1rem;
   margin-right: -1rem;
+}
+
+:deep(.user-info-card),
+:deep(.permissions-card) {
+  padding: 0.5rem !important;
+}
+
+:deep(.user-info-card > div:first-child),
+:deep(.permissions-card > div:first-child) {
+  padding: 0.5rem 1.5rem !important;
+  border-bottom: none !important;
+}
+
+:deep(.user-info-card > div:nth-child(2)),
+:deep(.permissions-card > div:nth-child(2)) {
+  padding: 0.25rem 1.5rem !important;
 }
 </style>
 
