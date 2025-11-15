@@ -1,75 +1,32 @@
-const DEFAULT_ACTIONS = Object.freeze([
-  { label: "Edit", value: "edit" },
-  { label: "Delete", value: "delete", tone: "danger" },
-]);
-
-const defaultConfirmDelete = (label) =>
-  window.confirm(
-    `Are you sure you want to delete ${label}? This action cannot be undone.`
-  );
-
-const defaultLogger = (message, payload) => {
-  // eslint-disable-next-line no-console
-  console.info(message, payload);
-};
+import useEntityActions from "./useEntityActions.js";
 
 const formatUserLabel = (user) =>
   user?.name || user?.email || user?.id || "user";
 
 /**
  * Centralizes user row actions so multiple views can share behaviour.
+ * This is a wrapper around useEntityActions for backward compatibility.
  */
 export function useUserActions({
-  confirmDelete = defaultConfirmDelete,
-  onEdit = (user) => defaultLogger("Edit user", formatUserLabel(user)),
-  onDelete = (user) => defaultLogger("Delete user", formatUserLabel(user)),
-  onInvite = () => defaultLogger("Invite user action triggered"),
-  onView = (userId) => defaultLogger("View user", userId),
+  confirmDelete,
+  onEdit,
+  onDelete,
+  onInvite,
+  onView,
 } = {}) {
-  const invite = () => {
-    onInvite();
-  };
-
-  const view = (userId) => {
-    if (!userId) return;
-    onView(userId);
-  };
-
-  const edit = (user) => {
-    if (!user) return;
-    onEdit(user);
-  };
-
-  const remove = (user) => {
-    if (!user) return;
-    const label = formatUserLabel(user);
-    const confirmed = confirmDelete(label);
-
-    if (!confirmed) return;
-
-    onDelete(user);
-  };
-
-  const handleRowAction = (action, user) => {
-    if (!user) return;
-
-    if (action === "edit") {
-      edit(user);
-      return;
-    }
-
-    if (action === "delete") {
-      remove(user);
-    }
-  };
+  const entityActions = useEntityActions({
+    formatLabel: formatUserLabel,
+    confirmDelete,
+    onEdit,
+    onDelete,
+    onInvite,
+    onView,
+    entityType: "user",
+    addMethodName: "invite",
+  });
 
   return {
-    rowActions: DEFAULT_ACTIONS,
-    invite,
-    view,
-    edit,
-    remove,
-    handleRowAction,
+    ...entityActions,
     formatUserLabel,
   };
 }
