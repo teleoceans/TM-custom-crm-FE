@@ -76,16 +76,17 @@ polygon {
   --color-warning: #f59e0b; /* warning-500 */
   --color-danger: #ef4444; /* danger-500 */
   --color-info: #3b82f6; /* info-500 */
-  
+
   /* Sidebar Active State - Light Mode */
-  --indigo-800: #42389D;
-  
+  --indigo-800: #42389d;
+
   /* Sidebar Hover State - Light Mode */
   --color-sidebar-hover: #f3f4f6; /* gray-100 */
 
   /* Shadows - Light Mode */
   --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
@@ -131,18 +132,24 @@ polygon {
   --color-warning: #fbbf24; /* warning-400 */
   --color-danger: #f87171; /* danger-400 */
   --color-info: #60a5fa; /* info-400 */
-  
+
   /* Sidebar Active State - Dark Mode (using gray-600) */
   --color-sidebar-active: #4b5563; /* gray-600 */
-  
+
   /* Sidebar Hover State - Dark Mode */
   --color-sidebar-hover: #374151; /* gray-700 */
 
   /* Shadows - Dark Mode (stronger shadows for dark backgrounds) */
   --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.4),
+    0 2px 4px -2px rgb(0 0 0 / 0.3);
   --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.5);
 }
 
+/* Shared utility class for header margins */
+.page-header-negative-margin {
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
