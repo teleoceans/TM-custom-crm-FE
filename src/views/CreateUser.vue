@@ -27,6 +27,13 @@
     </div>
 
     <div class="mx-auto w-full max-w-full py-4">
+      <!-- Aria-live region for form errors -->
+      <div aria-live="polite" aria-atomic="true" class="sr-only">
+        <span v-if="Object.values(errors).some((e) => e)">
+          Form has {{ Object.values(errors).filter((e) => e).length }} error(s)
+        </span>
+      </div>
+
       <form
         class="grid gap-6 overflow-hidden rounded-xl border border-gray-300 bg-white p-6 shadow-sm dark:border-white dark:bg-gray-800"
         @submit.prevent="handleSubmit"
@@ -216,6 +223,8 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { mockUserPermissionGroups, mockUserRoles } from "../mock/users";
 import Button from "../components/common/Button.vue";
+import { sanitizeFormData, sanitizeEmail } from "../utils/sanitize";
+import { useFormValidation } from "../composables/useFormValidation";
 
 const router = useRouter();
 
@@ -241,61 +250,30 @@ const form = reactive({
   selections,
 });
 
-const errors = reactive({
-  role: "",
-  name: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-});
-
-const clearErrors = () => {
-  Object.keys(errors).forEach((key) => {
-    errors[key] = "";
+// Use validation composable
+const { errors, clearErrors, clearError, validate, validatePasswordMatch } =
+  useFormValidation({
+    role: "",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-};
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const clearError = (field) => {
-  if (Object.prototype.hasOwnProperty.call(errors, field)) {
-    errors[field] = "";
-  }
+// Validation rules
+const validationRules = {
+  role: { required: true, type: "string", label: "Role" },
+  name: { required: true, type: "string", label: "Name" },
+  email: { required: true, type: "email", label: "Email" },
+  password: { required: true, type: "string", label: "Password" },
 };
 
 const validateForm = () => {
-  clearErrors();
-  let isValid = true;
+  let isValid = validate(form, validationRules);
 
-  if (!form.role) {
-    errors.role = "Role is required.";
-    isValid = false;
-  }
-
-  if (!form.name.trim()) {
-    errors.name = "Name is required.";
-    isValid = false;
-  }
-
-  if (!form.email.trim()) {
-    errors.email = "Email is required.";
-    isValid = false;
-  } else if (!emailPattern.test(form.email)) {
-    errors.email = "Enter a valid email address.";
-    isValid = false;
-  }
-
-  if (!form.password) {
-    errors.password = "Password is required.";
-    isValid = false;
-  }
-
-  if (!form.confirmPassword) {
-    errors.confirmPassword = "Confirm password is required.";
-    isValid = false;
-  } else if (form.password && form.password !== form.confirmPassword) {
-    errors.confirmPassword = "Passwords do not match.";
-    isValid = false;
+  // Validate password match separately
+  if (isValid) {
+    isValid = validatePasswordMatch(form.password, form.confirmPassword);
   }
 
   return isValid;
@@ -326,6 +304,22 @@ const handleSubmit = () => {
     return;
   }
 
+  // Sanitize form data before submission
+  const sanitizedData = sanitizeFormData(
+    {
+      role: form.role,
+      name: form.name,
+      email: form.email,
+      // Note: Passwords should NOT be sanitized in the same way as other fields
+      // They are handled separately and never logged
+    },
+    {
+      role: { type: "string" },
+      name: { type: "string" },
+      email: { type: "email" },
+    }
+  );
+
   const permissions = permissionGroups
     .filter((group) => group.id !== ASSIGN_GROUP_ID)
     .reduce((acc, group) => {
@@ -335,12 +329,11 @@ const handleSubmit = () => {
 
   const assignedTenants = [...(form.selections[ASSIGN_GROUP_ID] || [])];
 
+  // NEVER log passwords - security risk
   console.info("Submitting new user (placeholder):", {
-    role: form.role,
-    name: form.name,
-    email: form.email,
-    password: form.password,
-    confirmPassword: form.confirmPassword,
+    role: sanitizedData.role,
+    name: sanitizedData.name,
+    email: sanitizedData.email,
     permissions,
     tenants: assignedTenants,
   });
