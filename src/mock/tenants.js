@@ -1,3 +1,56 @@
+// Form dropdown options for tenant creation
+export const tenantFormOptions = {
+  countries: [
+    "United States",
+    "Canada",
+    "United Kingdom",
+    "Australia",
+    "Germany",
+    "France",
+    "Spain",
+    "Italy",
+  ],
+  cities: [
+    "Los Angeles",
+    "New York",
+    "Chicago",
+    "Houston",
+    "Phoenix",
+    "Philadelphia",
+    "San Antonio",
+    "San Diego",
+  ],
+  states: [
+    "Alaska",
+    "Alabama",
+    "Arkansas",
+    "Arizona",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+  ],
+  industries: [
+    "Real Estate",
+    "Technology",
+    "Healthcare",
+    "Finance",
+    "Retail",
+    "Manufacturing",
+    "Education",
+    "Hospitality",
+  ],
+  timeZones: [
+    "Eastern Time (ET)",
+    "Central Time (CT)",
+    "Mountain Time (MT)",
+    "Pacific Time (PT)",
+    "Alaska Time (AKT)",
+    "Hawaii Time (HST)",
+  ],
+  currencies: ["USD", "EUR", "GBP", "CAD", "AUD", "JPY", "CNY"],
+};
+
 export const mockAllTenants = [
   {
     id: "TENANT-1001",
