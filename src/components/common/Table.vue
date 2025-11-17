@@ -1,7 +1,9 @@
 <template>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-      <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+      <thead
+        class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+      >
         <tr>
           <th
             v-for="(column, index) in columns"
@@ -9,7 +11,11 @@
             scope="col"
             :class="[
               'px-6 py-3',
-              column.align === 'right' ? 'text-right' : column.align === 'center' ? 'text-center' : 'text-left'
+              column.align === 'right'
+                ? 'text-right'
+                : column.align === 'center'
+                ? 'text-center'
+                : 'text-left',
             ]"
           >
             {{ column.label }}
@@ -22,6 +28,7 @@
       <tbody>
         <tr
           v-for="(row, rowIndex) in data"
+          v-memo="[row, rowIndex]"
           :key="rowIndex"
           class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
         >
@@ -30,10 +37,18 @@
             :key="colIndex"
             :class="[
               'px-6 py-4',
-              column.align === 'right' ? 'text-right' : column.align === 'center' ? 'text-center' : ''
+              column.align === 'right'
+                ? 'text-right'
+                : column.align === 'center'
+                ? 'text-center'
+                : '',
             ]"
           >
-            <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]">
+            <slot
+              :name="`cell-${column.key}`"
+              :row="row"
+              :value="row[column.key]"
+            >
               {{ row[column.key] }}
             </slot>
           </td>
@@ -42,7 +57,10 @@
           </td>
         </tr>
         <tr v-if="data.length === 0">
-          <td :colspan="columns.length + ($slots.actions ? 1 : 0)" class="px-6 py-4 text-center">
+          <td
+            :colspan="columns.length + ($slots.actions ? 1 : 0)"
+            class="px-6 py-4 text-center"
+          >
             <slot name="empty">
               <p class="text-gray-500 dark:text-gray-400">No data available</p>
             </slot>
@@ -66,15 +84,14 @@ defineProps({
    */
   columns: {
     type: Array,
-    required: true
+    required: true,
   },
   /**
    * Table data
    */
   data: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 </script>
-

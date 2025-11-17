@@ -56,7 +56,7 @@ import {
   ref,
   watch,
 } from "vue";
-import MoreVertical from "../icons/MoreVertical.vue";
+import MoreVertical from "../icons/common/MoreVertical.vue";
 
 const props = defineProps({
   actions: {

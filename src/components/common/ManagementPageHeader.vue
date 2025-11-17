@@ -37,52 +37,24 @@
       <div class="flex items-center gap-3">
         <Button variant="muted" size="sm" @click="$emit('filter')">
           <template #icon-left>
-            <svg
-              class="h-4 w-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M5 3a2 2 0 0 0-1.5 3.3l5.4 6v5c0 .4.3.9.6 1.1l3.1 2.3c1 .7 2.5 0 2.5-1.2v-7.1l5.4-6C21.6 5 20.7 3 19 3H5Z"
-              />
-            </svg>
+            <FilterIcon class="h-4 w-4" />
           </template>
           Filter
         </Button>
         <Button variant="muted" size="sm" @click="$emit('add')">
           <template #icon-left>
-            <svg
-              class="h-4 w-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 5a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H6a1 1 0 1 1 0-2h5V6a1 1 0 0 1 1-1Z"
-              />
-            </svg>
+            <PlusIcon class="h-4 w-4" />
           </template>
           {{ addButtonLabel }}
         </Button>
-        <Button variant="muted" size="sm" @click="$emit('export')">
+        <Button
+          v-if="showExport"
+          variant="muted"
+          size="sm"
+          @click="$emit('export')"
+        >
           <template #icon-left>
-            <svg
-              class="h-4 w-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 3a1 1 0 0 1 .993.883L13 4v8.585l1.293-1.292a1 1 0 0 1 1.32-.083l.094.083a1 1 0 0 1 .083 1.32l-.083.094-3 3a1 1 0 0 1-1.32.083l-.094-.083-3-3a1 1 0 0 1 1.32-1.497l.094.083L11 12.585V4a1 1 0 0 1 1-1Z"
-              />
-              <path
-                d="M5 15a1 1 0 0 1 .883.993L6 16v2h12v-2a1 1 0 0 1 1.993-.117L20 16v3a1 1 0 0 1-.883.993L19 20H5a1 1 0 0 1-.993-.883L4 19v-3a1 1 0 0 1 1-1Z"
-              />
-            </svg>
+            <ExportIcon class="h-4 w-4" />
           </template>
           Export
         </Button>
@@ -93,6 +65,9 @@
 
 <script setup>
 import Button from "./Button.vue";
+import FilterIcon from "../icons/common/FilterIcon.vue";
+import PlusIcon from "../icons/common/PlusIcon.vue";
+import ExportIcon from "../icons/common/ExportIcon.vue";
 
 defineProps({
   searchTerm: {
@@ -119,15 +94,16 @@ defineProps({
     type: String,
     default: "",
   },
+  showExport: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 defineEmits(["update:searchTerm", "filter", "add", "export"]);
 </script>
 
 <style scoped>
-.management-header {
-  margin-left: -1rem;
-  margin-right: -1rem;
-}
+/* Header styles moved to theme.css utility class - use page-header-negative-margin */
 </style>
 
