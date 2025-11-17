@@ -3,6 +3,8 @@
   <button
     v-if="variant === 'desktop'"
     id="toggleSidebarButton"
+    type="button"
+    aria-label="Toggle sidebar collapse"
     aria-expanded="true"
     aria-controls="sidebar"
     class="me-2 hidden cursor-pointer rounded-sm p-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white sm:-ms-1 lg:inline"
@@ -18,14 +20,21 @@
       fill="none"
       viewBox="0 0 24 24"
     >
-      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h10" />
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="2"
+        d="M5 7h14M5 12h14M5 17h10"
+      />
     </svg>
   </button>
   <!-- Mobile Sidebar Toggle -->
   <button
     v-else
+    type="button"
     data-drawer-target="sidebar"
     data-drawer-toggle="sidebar"
+    aria-label="Toggle sidebar menu"
     aria-expanded="false"
     aria-controls="sidebar"
     class="me-2 inline cursor-pointer rounded-sm p-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white sm:-ms-1 lg:hidden"
@@ -41,7 +50,12 @@
       fill="none"
       viewBox="0 0 24 24"
     >
-      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h10" />
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="2"
+        d="M5 7h14M5 12h14M5 17h10"
+      />
     </svg>
   </button>
 </template>
@@ -59,11 +73,10 @@ defineProps({
    */
   variant: {
     type: String,
-    default: 'mobile',
-    validator: (value) => ['desktop', 'mobile'].includes(value)
-  }
-})
+    default: "mobile",
+    validator: (value) => ["desktop", "mobile"].includes(value),
+  },
+});
 
-defineEmits(['click'])
+defineEmits(["click"]);
 </script>
-

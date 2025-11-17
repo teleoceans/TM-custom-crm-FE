@@ -14,15 +14,23 @@
     >
       <slot name="icon">
         <component
-          v-if="currentIconComponent"
-          :is="currentIconComponent"
+          v-if="iconOutline && iconSolid"
+          :is="isActive ? iconSolid : iconOutline"
+          :style="{
+            color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
+          }"
+          class="h-5 w-5 shrink-0 transition-colors"
+        />
+        <component
+          v-else-if="iconComponent"
+          :is="iconComponent"
           :style="{
             color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
           }"
           class="h-5 w-5 shrink-0 transition-colors"
         />
         <svg
-          v-else-if="currentIcon"
+          v-else-if="icon"
           :style="{
             color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
           }"
@@ -34,7 +42,7 @@
           fill="currentColor"
           viewBox="0 0 24 24"
         >
-          <path :d="currentIcon" />
+          <path :d="icon" />
         </svg>
       </slot>
       <span 
@@ -59,13 +67,23 @@
     >
       <slot name="icon">
         <component
-          v-if="currentIconComponent"
-          :is="currentIconComponent"
+          v-if="iconOutline && iconSolid"
+          :is="isActive ? iconSolid : iconOutline"
+          :style="{
+            color: isActive ? 'var(--color-text-white)' : 'var(--color-text-muted)'
+          }"
           class="h-5 w-5 shrink-0 transition-colors"
-          :style="{ color: 'var(--color-text-muted)' }"
+        />
+        <component
+          v-else-if="iconComponent"
+          :is="iconComponent"
+          :style="{
+            color: 'var(--color-text-muted)'
+          }"
+          class="h-5 w-5 shrink-0 transition-colors"
         />
         <svg
-          v-else-if="currentIcon"
+          v-else-if="icon"
           :style="{
             color: 'var(--color-text-muted)'
           }"
@@ -77,7 +95,7 @@
           fill="currentColor"
           viewBox="0 0 24 24"
         >
-          <path :d="currentIcon" />
+          <path :d="icon" />
         </svg>
       </slot>
       <span 
@@ -150,25 +168,25 @@ const props = defineProps({
     default: ''
   },
   /**
-   * Icon component
+   * Icon component (deprecated - use iconOutline and iconSolid)
    */
   iconComponent: {
     type: Object,
     default: null
   },
   /**
-   * Active state icon component
+   * Outline icon component (shown when not active)
    */
-  activeIconComponent: {
+  iconOutline: {
     type: Object,
     default: null
   },
   /**
-   * Active state icon path
+   * Solid icon component (shown when active)
    */
-  activeIcon: {
-    type: String,
-    default: ''
+  iconSolid: {
+    type: Object,
+    default: null
   },
   /**
    * Has child items
@@ -186,20 +204,6 @@ const isExpanded = ref(false)
 const isActive = computed(() => {
   if (!props.to) return false
   return route.path === props.to || route.path.startsWith(props.to + '/')
-})
-
-const currentIconComponent = computed(() => {
-  if (isActive.value && props.activeIconComponent) {
-    return props.activeIconComponent
-  }
-  return props.iconComponent
-})
-
-const currentIcon = computed(() => {
-  if (isActive.value && props.activeIcon) {
-    return props.activeIcon
-  }
-  return props.icon
 })
 
 const toggle = () => {
