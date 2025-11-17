@@ -104,11 +104,12 @@
 
 <script setup>
 import { computed, nextTick, reactive, ref } from "vue";
-import PlusIcon from "../icons/PlusIcon.vue";
+import PlusIcon from "../icons/common/PlusIcon.vue";
 import Input from "../common/Input.vue";
 import Button from "../common/Button.vue";
 import DashedActionButton from "../common/DashedActionButton.vue";
 import BaseModal from "../common/BaseModal.vue";
+import { sanitizeFormData } from "../../utils/sanitize";
 
 const props = defineProps({
   column: {
@@ -242,16 +243,27 @@ const handleSubmit = () => {
     return;
   }
 
-  const trimValue = (value) => (value ?? "").toString().trim();
+  // Sanitize form data before submission
+  const sanitizedForm = sanitizeFormData(form, {
+    name: { type: "string" },
+    email: { type: "email" },
+    phone: { type: "phone" },
+    leadValue: { type: "number" },
+    marketValue: { type: "number" },
+    askingPrice: { type: "number" },
+    address: { type: "text" },
+    notes: { type: "text" },
+  });
+
   const payload = {
-    name: trimValue(form.name),
-    email: trimValue(form.email),
-    phone: trimValue(form.phone),
-    leadValue: trimValue(form.leadValue),
-    marketValue: trimValue(form.marketValue),
-    askingPrice: trimValue(form.askingPrice),
-    address: trimValue(form.address),
-    notes: trimValue(form.notes),
+    name: sanitizedForm.name,
+    email: sanitizedForm.email,
+    phone: sanitizedForm.phone,
+    leadValue: sanitizedForm.leadValue,
+    marketValue: sanitizedForm.marketValue,
+    askingPrice: sanitizedForm.askingPrice,
+    address: sanitizedForm.address,
+    notes: sanitizedForm.notes,
   };
 
   if (mode.value === "edit" && editingCardId.value) {

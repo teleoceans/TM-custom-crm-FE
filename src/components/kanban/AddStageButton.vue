@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import PlusIcon from "../icons/PlusIcon.vue";
+import PlusIcon from "../icons/common/PlusIcon.vue";
 import DashedActionButton from "../common/DashedActionButton.vue";
 
 defineProps({
