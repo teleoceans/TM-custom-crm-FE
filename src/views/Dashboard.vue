@@ -71,10 +71,10 @@ import { ref } from "vue";
 import StatCard from "../components/common/StatCard.vue";
 import RevenueChartCard from "../components/charts/RevenueChartCard.vue";
 import BarChart from "../components/charts/BarChart.vue";
-import NewLeadsIcon from "../components/icons/NewLeads.vue";
-import ContactedLeadsIcon from "../components/icons/ContactedLeads.vue";
-import WonLeadsIcon from "../components/icons/WonLeads.vue";
-import LostLeadsIcon from "../components/icons/LostLeads.vue";
+import NewLeadsIcon from "../components/icons/stats/NewLeads.vue";
+import ContactedLeadsIcon from "../components/icons/stats/ContactedLeads.vue";
+import WonLeadsIcon from "../components/icons/stats/WonLeads.vue";
+import LostLeadsIcon from "../components/icons/stats/LostLeads.vue";
 import {
   mockChartSeries,
   mockChartCategories,
