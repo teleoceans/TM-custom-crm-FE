@@ -53,6 +53,11 @@ const routes = [
         component: () => import("../views/TenantManagement.vue"),
       },
       {
+        path: "tenant-management/new",
+        name: "CreateTenant",
+        component: () => import("../views/CreateTenant.vue"),
+      },
+      {
         path: "tenant-management/:tenantId",
         name: "TenantInfo",
         component: () => import("../views/TenantInfo.vue"),
