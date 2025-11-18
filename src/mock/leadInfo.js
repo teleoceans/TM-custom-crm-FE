@@ -83,3 +83,60 @@ export const leadTabContent = {
     },
   ],
 };
+
+// Default activity items for LeadActivityPanel
+export const LEAD_ACTIVITY_ITEMS = Object.freeze([
+  {
+    id: "default-lead-activity-1",
+    title: "Follow Up Call",
+    meta: "Called by Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-lead-activity-2",
+    title: "Follow Up Call",
+    meta: "Called by Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-lead-activity-3",
+    title: "Follow Up Call",
+    meta: "Called by Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-lead-activity-4",
+    title: "Follow Up Call",
+    meta: "Called by Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-lead-activity-5",
+    title: "Deal Closed",
+    meta: "Lead is a won deal",
+  },
+]);
+
+export const NOTES_ITEMS = Object.freeze([
+  {
+    id: "default-notes-1",
+    title: "Client mention they are interested but still comparing prices",
+    meta: "By Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-notes-2",
+    title: "Follow up call done, client asked for details to be sent by email",
+    meta: "By Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-notes-3",
+    title: "First call , client prefers to be contacted after 6 pm",
+    meta: "By Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-notes-4",
+    title: "First call , client prefers to be contacted after 6 pm",
+    meta: "By Ahmed on 21/3/2025",
+  },
+  {
+    id: "default-notes-5",
+    title: "First call , client prefers to be contacted after 6 pm",
+    meta: "By Ahmed on 21/3/2025",
+  },
+]);
