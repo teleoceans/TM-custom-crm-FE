@@ -1,42 +1,52 @@
 <template>
   <div
-    class="flex flex-row items-center gap-4 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800"
+    class="overflow-x-auto rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
   >
-    <template v-for="(tab, index) in tabs" :key="tab.id">
-      <button
-        type="button"
-        :class="[
-          'flex flex-row items-center justify-center gap-1.5 rounded-md px-0 py-0',
-          'transition-colors',
-          isActive(tab.id)
-            ? 'text-purple-600 dark:text-purple-400'
-            : 'text-gray-500 dark:text-gray-400',
-        ]"
-        @click="selectTab(tab.id)"
-      >
-        <component
-          :is="tab.icon"
+    <div
+      class="flex min-w-full flex-row items-center gap-2 p-4 sm:gap-4 sm:p-6"
+    >
+      <template v-for="(tab, index) in tabs" :key="tab.id">
+        <button
+          type="button"
           :class="[
-            'h-5 w-5 flex-shrink-0',
-            isActive(tab.id)
+            'flex flex-shrink-0 flex-row items-center justify-center gap-1 rounded-md px-2 py-1 transition-colors sm:gap-1.5 sm:px-0 sm:py-0',
+            isActive(tab.id) || isCompleted(tab.id)
               ? 'text-purple-600 dark:text-purple-400'
               : 'text-gray-500 dark:text-gray-400',
           ]"
-        />
-        <span
-          :class="[
-            'text-sm font-medium leading-tight',
-            isActive(tab.id) ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500 dark:text-gray-400',
-          ]"
+          @click="selectTab(tab.id)"
         >
-          {{ tab.label }}
-        </span>
-      </button>
-      <div
-        v-if="index < tabs.length - 1"
-        class="h-px flex-1 border-t border-gray-400 dark:border-gray-500"
-      >      </div>
-    </template>
+          <component
+            :is="tab.icon"
+            :class="[
+              'h-4 w-4 flex-shrink-0 sm:h-5 sm:w-5',
+              isActive(tab.id) || isCompleted(tab.id)
+                ? 'text-purple-600 dark:text-purple-400'
+                : 'text-gray-500 dark:text-gray-400',
+            ]"
+          />
+          <span
+            :class="[
+              'text-xs font-medium leading-tight sm:text-sm',
+              isActive(tab.id) || isCompleted(tab.id)
+                ? 'text-purple-600 dark:text-purple-400'
+                : 'text-gray-500 dark:text-gray-400',
+            ]"
+          >
+            {{ tab.label }}
+          </span>
+        </button>
+        <div
+          v-if="index < tabs.length - 1"
+          :class="[
+            'h-0.5 flex-1 min-w-[20px] border-t-2 sm:min-w-0',
+            isCompleted(tab.id) || isActive(tab.id)
+              ? 'border-purple-400 dark:border-purple-500'
+              : 'border-gray-400 dark:border-gray-500',
+          ]"
+        >      </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -59,12 +69,20 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  completedTabs: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const isActive = (tabId) => {
   return props.modelValue === tabId;
+};
+
+const isCompleted = (tabId) => {
+  return props.completedTabs.includes(tabId);
 };
 
 const selectTab = (tabId) => {
