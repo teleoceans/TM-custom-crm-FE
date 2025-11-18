@@ -7,24 +7,13 @@
     <template v-if="$slots.header" #header>
       <slot name="header" />
     </template>
-    <div v-if="enableDateFilter" class="table-card-controls">
-      <label :for="`${idPrefix}-date-filter`" class="sr-only">
-        Filter by date range
-      </label>
-      <select
-        :id="`${idPrefix}-date-filter`"
-        v-model="dateFilter"
-        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-primary-400 dark:focus:ring-primary-900"
-      >
-        <option
-          v-for="option in availableDateFilterOptions"
-          :key="option.value"
-          :value="option.value"
-        >
-          {{ option.label }}
-        </option>
-      </select>
-    </div>
+    <TableDateFilter
+      v-if="enableDateFilter"
+      :model-value="dateFilter"
+      :options="availableDateFilterOptions"
+      :id-prefix="idPrefix"
+      @update:model-value="dateFilter = $event"
+    />
     <div class="overflow-x-auto">
       <table class="min-w-full table-fixed divide-y divide-gray-200">
         <thead>
@@ -98,95 +87,26 @@
               </slot>
             </td>
           </tr>
-          <tr v-if="paginatedItems.length === 0">
-            <td
-              :colspan="resolvedColumns.length + (selectable ? 1 : 0)"
-              class="px-6 py-16 text-center text-sm text-gray-500 dark:text-gray-400"
-            >
-              <div class="mx-auto max-w-md space-y-2">
-                <p
-                  class="text-lg font-semibold text-gray-900 dark:text-gray-100"
-                >
-                  {{ emptyState.title }}
-                </p>
-                <p>{{ emptyState.description }}</p>
-                <div class="flex justify-center gap-3 pt-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    @click="handleResetSearch"
-                    >{{ emptyState.resetLabel }}</Button
-                  >
-                  <Button size="sm" @click="handleAddItem">{{
-                    emptyState.primaryActionLabel
-                  }}</Button>
-                </div>
-              </div>
-            </td>
-          </tr>
+          <TableEmptyState
+            v-if="paginatedItems.length === 0"
+            :colspan="resolvedColumns.length + (selectable ? 1 : 0)"
+            :empty-state="emptyState"
+            @reset-search="handleResetSearch"
+            @add-item="handleAddItem"
+          />
         </tbody>
       </table>
     </div>
 
-    <div
-      class="flex flex-col items-center justify-between gap-4 border-t border-gray-200 px-6 py-4 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300 md:flex-row"
-    >
-      <p>
-        Showing
-        <span class="font-medium text-gray-900 dark:text-gray-100">{{
-          showingRange
-        }}</span>
-        of
-        <span class="font-medium text-gray-900 dark:text-gray-100">{{
-          totalRecords
-        }}</span>
-        {{ resourceNamePlural }}
-      </p>
-      <nav
-        class="flex items-center divide-x divide-primary-200 overflow-hidden rounded-md border border-primary-200 text-sm font-medium shadow-sm dark:divide-primary-800 dark:border-primary-800"
-        aria-label="Pagination"
-      >
-        <button
-          type="button"
-          class="flex h-9 w-10 items-center justify-center bg-white text-gray-700 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:text-gray-400 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-primary-900"
-          :disabled="currentPage === 1"
-          @click="goToPage(currentPage - 1)"
-          aria-label="Previous page"
-        >
-          ‹
-        </button>
-        <template v-for="item in paginationItems" :key="item.key">
-          <button
-            v-if="item.type === 'page'"
-            type="button"
-            :class="[
-              'flex h-9 min-w-[2.25rem] items-center justify-center px-3 transition',
-              currentPage === item.value
-                ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-100'
-                : 'bg-white text-gray-700 hover:bg-primary-50 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-primary-900',
-            ]"
-            @click="goToPage(item.value)"
-          >
-            {{ item.value }}
-          </button>
-          <span
-            v-else
-            class="flex h-9 min-w-[2.25rem] items-center justify-center bg-white px-3 text-gray-400 dark:bg-gray-900 dark:text-gray-500"
-          >
-            …
-          </span>
-        </template>
-        <button
-          type="button"
-          class="flex h-9 w-10 items-center justify-center bg-white text-gray-700 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:text-gray-400 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-primary-900"
-          :disabled="currentPage === totalPages"
-          @click="goToPage(currentPage + 1)"
-          aria-label="Next page"
-        >
-          ›
-        </button>
-      </nav>
-    </div>
+    <TablePagination
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :showing-range="showingRange"
+      :total-records="totalRecords"
+      :resource-name-plural="resourceNamePlural"
+      :pagination-items="paginationItems"
+      @go-to-page="goToPage"
+    />
     <template v-if="$slots.footer" #footer>
       <slot name="footer" />
     </template>
@@ -195,9 +115,15 @@
 
 <script setup>
 import { computed, ref, watch } from "vue";
-import Button from "../common/Button.vue";
 import Card from "../common/Card.vue";
 import CardChip from "../common/CardChip.vue";
+import TablePagination from "../common/TablePagination.vue";
+import TableEmptyState from "../common/TableEmptyState.vue";
+import TableDateFilter from "../common/TableDateFilter.vue";
+import { formatDate, formatCurrency } from "../../utils/formatters";
+import { DEFAULT_DATE_FILTER_OPTIONS, isWithinRange } from "../../composables/useDateFilter";
+import { useTablePagination } from "../../composables/useTablePagination";
+import { useTableSelection } from "../../composables/useTableSelection";
 
 const stageStyles = {
   "New lead": "card-chip--primary",
@@ -209,26 +135,6 @@ const stageStyles = {
 
 function defaultStageClass(stage) {
   return stageStyles[stage] ?? "card-chip--neutral";
-}
-
-function formatDate(value) {
-  if (!value) return "";
-
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(value));
-}
-
-function formatCurrency(value) {
-  if (value == null) return "";
-
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(value);
 }
 
 const defaultColumns = [
@@ -362,20 +268,10 @@ const emit = defineEmits([
 const idPrefix = `table-card-${Math.random().toString(36).slice(2, 9)}`;
 
 const dateFilter = ref("last-30-days");
-const defaultDateFilterOptions = [
-  { value: "last-7-days", label: "Last 7 days" },
-  { value: "last-30-days", label: "Last 30 days" },
-  { value: "last-90-days", label: "Last 90 days" },
-  { value: "this-year", label: "This year" },
-  { value: "all", label: "All time" },
-];
-
 const availableDateFilterOptions = computed(
-  () => props.customDateFilterOptions ?? defaultDateFilterOptions
+  () => props.customDateFilterOptions ?? DEFAULT_DATE_FILTER_OPTIONS
 );
 
-const selectedRowIds = ref([]);
-const currentPage = ref(1);
 const selectAllCheckbox = ref(null);
 
 const resolvedColumns = computed(() => {
@@ -396,31 +292,7 @@ const resolvedColumns = computed(() => {
 
 const rows = computed(() => props.items ?? props.leads);
 
-const isWithinRange = (dateString, filter) => {
-  if (filter === "all" || !dateString) return true;
-
-  const targetDate = new Date(dateString);
-  const today = new Date();
-
-  targetDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  const diffInDays = (today - targetDate) / (1000 * 60 * 60 * 24);
-
-  switch (filter) {
-    case "last-7-days":
-      return diffInDays <= 7;
-    case "last-30-days":
-      return diffInDays <= 30;
-    case "last-90-days":
-      return diffInDays <= 90;
-    case "this-year":
-      return targetDate.getFullYear() === today.getFullYear();
-    default:
-      return true;
-  }
-};
-
+// Filter items by search term and date
 const filteredItems = computed(() => {
   const term = props.searchTerm.trim().toLowerCase();
   const range = dateFilter.value;
@@ -442,106 +314,32 @@ const filteredItems = computed(() => {
   });
 });
 
-const totalRecords = computed(() => filteredItems.value.length);
-
-const totalPages = computed(() =>
-  Math.max(1, Math.ceil(totalRecords.value / props.pageSize))
-);
-
-const paginatedItems = computed(() => {
-  const start = (currentPage.value - 1) * props.pageSize;
-  return filteredItems.value.slice(start, start + props.pageSize);
+// Use pagination composable
+const {
+  currentPage,
+  totalPages,
+  totalRecords,
+  paginatedItems,
+  showingRange,
+  paginationItems,
+  goToPage,
+} = useTablePagination({
+  items: filteredItems,
+  pageSize: props.pageSize,
 });
 
-const showingRange = computed(() => {
-  if (filteredItems.value.length === 0) {
-    return "0 – 0";
-  }
-
-  const start = (currentPage.value - 1) * props.pageSize + 1;
-  const end = Math.min(start + props.pageSize - 1, filteredItems.value.length);
-  return `${start} – ${end}`;
+// Use selection composable
+const {
+  selectedRowIds,
+  allSelectedOnPage,
+  isIndeterminate,
+  toggleSelectAll,
+} = useTableSelection({
+  paginatedItems,
+  allItems: filteredItems,
+  rowIdKey: props.rowIdKey,
+  selectable: props.selectable,
 });
-
-const paginationItems = computed(() => {
-  const items = [];
-  const total = totalPages.value;
-
-  const addPage = (value) => {
-    items.push({ type: "page", value, key: `page-${value}` });
-  };
-
-  const addEllipsis = (key) => {
-    items.push({ type: "ellipsis", key });
-  };
-
-  if (total <= 7) {
-    for (let page = 1; page <= total; page += 1) addPage(page);
-    return items;
-  }
-
-  if (currentPage.value <= 4) {
-    for (let page = 1; page <= 5; page += 1) addPage(page);
-    addEllipsis("ellipsis-tail");
-    addPage(total);
-    return items;
-  }
-
-  if (currentPage.value >= total - 3) {
-    addPage(1);
-    addEllipsis("ellipsis-head");
-    for (let page = total - 4; page <= total; page += 1) addPage(page);
-    return items;
-  }
-
-  addPage(1);
-  addEllipsis("ellipsis-head");
-  addPage(currentPage.value - 1);
-  addPage(currentPage.value);
-  addPage(currentPage.value + 1);
-  addEllipsis("ellipsis-tail");
-  addPage(total);
-  return items;
-});
-
-const allSelectedOnPage = computed(
-  () =>
-    props.selectable &&
-    paginatedItems.value.length > 0 &&
-    paginatedItems.value.every((item) =>
-      selectedRowIds.value.includes(item[props.rowIdKey])
-    )
-);
-
-const isIndeterminate = computed(() => {
-  if (!props.selectable) return false;
-
-  const pageRowIds = paginatedItems.value.map((item) => item[props.rowIdKey]);
-  const selectedCount = pageRowIds.filter((id) =>
-    selectedRowIds.value.includes(id)
-  ).length;
-  return selectedCount > 0 && selectedCount < paginatedItems.value.length;
-});
-
-const goToPage = (page) => {
-  if (typeof page !== "number") return;
-  if (page < 1 || page > totalPages.value) return;
-  currentPage.value = page;
-};
-
-const toggleSelectAll = (checked) => {
-  const pageRowIds = paginatedItems.value.map((item) => item[props.rowIdKey]);
-
-  if (checked) {
-    selectedRowIds.value = Array.from(
-      new Set([...selectedRowIds.value, ...pageRowIds])
-    );
-  } else {
-    selectedRowIds.value = selectedRowIds.value.filter(
-      (id) => !pageRowIds.includes(id)
-    );
-  }
-};
 
 const handleResetSearch = () => {
   emit("reset-search");
@@ -578,24 +376,16 @@ const resolveBadgeClass = (column, item) => {
 const itemLabel = (item) =>
   item.name ?? item.title ?? `${props.resourceName} ${item[props.rowIdKey]}`;
 
-watch(filteredItems, (newItems) => {
-  const validIds = new Set(newItems.map((item) => item[props.rowIdKey]));
-  selectedRowIds.value = selectedRowIds.value.filter((id) => validIds.has(id));
-
-  if (currentPage.value > totalPages.value) {
-    currentPage.value = totalPages.value;
-  }
-});
-
+// Reset to page 1 when search term or date filter changes
 watch(
   () => props.searchTerm,
   () => {
-    currentPage.value = 1;
+    goToPage(1);
   }
 );
 
 watch(dateFilter, () => {
-  currentPage.value = 1;
+  goToPage(1);
 });
 
 watch([isIndeterminate, allSelectedOnPage], () => {
@@ -606,16 +396,5 @@ watch([isIndeterminate, allSelectedOnPage], () => {
 </script>
 
 <style scoped>
-.table-card-controls {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 16px;
-  gap: 10px;
-  width: 182px;
-  height: 69px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
+/* Styles moved to TableDateFilter.vue */
 </style>
