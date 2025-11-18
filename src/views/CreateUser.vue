@@ -69,143 +69,61 @@
             </p>
           </div>
 
-          <div class="flex flex-col gap-2">
-            <label
-              for="user-password"
-              class="text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Password<span class="text-primary-600">*</span>
-            </label>
-            <input
-              id="user-password"
-              v-model="form.password"
-              type="password"
-              @input="clearError('password')"
-              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400 dark:focus:border-primary-400 dark:focus:ring-primary-800"
-              placeholder="Enter password"
-            />
-            <p
-              v-if="errors.password"
-              class="text-xs font-medium text-red-600 dark:text-red-400"
-            >
-              {{ errors.password }}
-            </p>
-          </div>
+          <FormField
+            id="user-password"
+            label="Password"
+            type="password"
+            v-model="form.password"
+            placeholder="Enter password"
+            :required="true"
+            :error="errors.password"
+            @input="clearError('password')"
+          />
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
-          <div class="flex flex-col gap-2">
-            <label
-              for="user-name"
-              class="text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Name of user<span class="text-primary-600">*</span>
-            </label>
-            <input
-              id="user-name"
-              v-model="form.name"
-              type="text"
-              @input="clearError('name')"
-              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400 dark:focus:border-primary-400 dark:focus:ring-primary-800"
-              placeholder="Ahmed Khaled"
-            />
-            <p
-              v-if="errors.name"
-              class="text-xs font-medium text-red-600 dark:text-red-400"
-            >
-              {{ errors.name }}
-            </p>
-          </div>
+          <FormField
+            id="user-name"
+            label="Name of user"
+            type="text"
+            v-model="form.name"
+            placeholder="Ahmed Khaled"
+            :required="true"
+            :error="errors.name"
+            @input="clearError('name')"
+          />
 
-          <div class="flex flex-col gap-2">
-            <label
-              for="user-confirm-password"
-              class="text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Confirm Password<span class="text-primary-600">*</span>
-            </label>
-            <input
-              id="user-confirm-password"
-              v-model="form.confirmPassword"
-              type="password"
-              @input="clearError('confirmPassword')"
-              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400 dark:focus:border-primary-400 dark:focus:ring-primary-800"
-              placeholder="Re-enter password"
-            />
-            <p
-              v-if="errors.confirmPassword"
-              class="text-xs font-medium text-red-600 dark:text-red-400"
-            >
-              {{ errors.confirmPassword }}
-            </p>
-          </div>
+          <FormField
+            id="user-confirm-password"
+            label="Confirm Password"
+            type="password"
+            v-model="form.confirmPassword"
+            placeholder="Re-enter password"
+            :required="true"
+            :error="errors.confirmPassword"
+            @input="clearError('confirmPassword')"
+          />
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
-          <div class="flex flex-col gap-2">
-            <label
-              for="user-email"
-              class="text-sm font-medium text-gray-700 dark:text-gray-200"
-            >
-              Email<span class="text-primary-600">*</span>
-            </label>
-            <input
-              id="user-email"
-              v-model="form.email"
-              type="email"
-              @input="clearError('email')"
-              class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:placeholder:text-gray-400 dark:focus:border-primary-400 dark:focus:ring-primary-800"
-              placeholder="a.aly@gmail.com"
-            />
-            <p
-              v-if="errors.email"
-              class="text-xs font-medium text-red-600 dark:text-red-400"
-            >
-              {{ errors.email }}
-            </p>
-          </div>
+          <FormField
+            id="user-email"
+            label="Email"
+            type="email"
+            v-model="form.email"
+            placeholder="a.aly@gmail.com"
+            :required="true"
+            :error="errors.email"
+            @input="clearError('email')"
+          />
         </div>
 
-        <div class="space-y-8">
-          <section
-            v-for="group in permissionGroups"
-            :key="group.id"
-            class="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0 dark:border-gray-700"
-          >
-            <div class="mb-4 flex items-center justify-between">
-              <h2
-                class="text-lg font-semibold text-gray-900 dark:text-gray-100"
-              >
-                {{ group.label }}
-              </h2>
-              <button
-                type="button"
-                class="text-sm font-medium text-primary-600 transition hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
-                @click="toggleGroup(group.id)"
-              >
-                {{
-                  isGroupFullySelected(group.id) ? "Clear all" : "Select all"
-                }}
-              </button>
-            </div>
-            <div class="grid gap-3 md:grid-cols-2">
-              <label
-                v-for="option in group.options"
-                :key="option.id"
-                class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-200"
-              >
-                <input
-                  :id="`${group.id}-${option.id}`"
-                  v-model="form.selections[group.id]"
-                  :value="option.id"
-                  type="checkbox"
-                  class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-primary-500"
-                />
-                <span>{{ option.label }}</span>
-              </label>
-            </div>
-          </section>
-        </div>
+        <PermissionGroupsSelector
+          :permission-groups="permissionGroups"
+          :model-value="form.selections"
+          @update:model-value="form.selections = $event"
+          @toggle-group="toggleGroup"
+        />
 
         <div
           class="flex flex-col gap-3 border-t border-gray-200 pt-4 dark:border-gray-700 md:flex-row md:justify-end"
@@ -223,6 +141,8 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { mockUserPermissionGroups, mockUserRoles } from "../mock/users";
 import Button from "../components/common/Button.vue";
+import FormField from "../components/common/FormField.vue";
+import PermissionGroupsSelector from "../components/users/PermissionGroupsSelector.vue";
 import { sanitizeFormData, sanitizeEmail } from "../utils/sanitize";
 import { useFormValidation } from "../composables/useFormValidation";
 
