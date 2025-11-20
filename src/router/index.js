@@ -28,14 +28,39 @@ const routes = [
         component: () => import("../views/CreateLead.vue"),
       },
       {
+        path: "leads/:leadId",
+        name: "LeadInfo",
+        component: () => import("../views/LeadInfo.vue"),
+      },
+      {
         path: "user-management",
         name: "UserManagement",
         component: () => import("../views/UserManagement.vue"),
       },
       {
+        path: "user-management/new",
+        name: "CreateUser",
+        component: () => import("../views/CreateUser.vue"),
+      },
+      {
+        path: "user-management/:userId",
+        name: "UserInfo",
+        component: () => import("../views/UserInfo.vue"),
+      },
+      {
         path: "tenant-management",
         name: "TenantManagement",
         component: () => import("../views/TenantManagement.vue"),
+      },
+      {
+        path: "tenant-management/new",
+        name: "CreateTenant",
+        component: () => import("../views/CreateTenant.vue"),
+      },
+      {
+        path: "tenant-management/:tenantId",
+        name: "TenantInfo",
+        component: () => import("../views/TenantInfo.vue"),
       },
       {
         path: "settings",

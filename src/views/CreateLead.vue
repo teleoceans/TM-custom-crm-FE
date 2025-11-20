@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="mx-auto w-full max-w-full px-4 py-8">
+    <div class="mx-auto w-full max-w-full py-4">
       <form
         class="grid gap-6 overflow-hidden rounded-xl border border-gray-300 bg-white p-6 shadow-sm dark:border-white dark:bg-gray-800"
         @submit.prevent="handleSubmit"
@@ -197,6 +197,7 @@
 <script setup>
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import { sanitizeFormData } from "../utils/sanitize";
 
 const router = useRouter();
 const form = reactive({
@@ -211,7 +212,19 @@ const form = reactive({
 });
 
 const handleSubmit = () => {
-  console.info("Submitting new lead (placeholder):", { ...form });
+  // Sanitize form data before submission
+  const sanitizedData = sanitizeFormData(form, {
+    name: { type: "string" },
+    email: { type: "email" },
+    phone: { type: "phone" },
+    leadValue: { type: "number" },
+    marketValue: { type: "number" },
+    askingPrice: { type: "number" },
+    address: { type: "text" },
+    notes: { type: "text" },
+  });
+
+  console.info("Submitting new lead (placeholder):", sanitizedData);
 };
 
 const handleCancel = () => {

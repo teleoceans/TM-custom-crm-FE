@@ -42,6 +42,7 @@
           @edit="handleEditCard"
           @delete="handleDeleteCard"
           @drag-start="handleCardDragStart"
+          @open="handleOpenCard"
         />
       </div>
 
@@ -92,6 +93,7 @@ const emit = defineEmits([
   "delete-card",
   "edit-stage",
   "delete-stage",
+  "open-card",
 ]);
 
 const active = ref(false);
@@ -121,6 +123,10 @@ const handleEditCard = (cardId) => {
 
 const handleDeleteCard = (card) => {
   emit("delete-card", card.id ?? card);
+};
+
+const handleOpenCard = (cardId) => {
+  emit("open-card", cardId);
 };
 
 const handleDragOver = (e) => {

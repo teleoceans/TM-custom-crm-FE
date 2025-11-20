@@ -4,26 +4,25 @@
     <div
       :draggable="true"
       @dragstart="handleDragStart"
-      class="flex cursor-grab flex-col items-start gap-4 rounded-lg bg-white p-4 shadow-sm active:cursor-grabbing dark:bg-gray-800"
-      :style="cardStyle"
+      @dragend="handleDragEnd"
+      @click="handleCardClick"
+      class="kanban-card flex cursor-grab flex-col items-start gap-4 rounded-lg p-4 shadow-sm active:cursor-grabbing"
     >
       <!-- Card Header -->
       <div class="flex w-full flex-row items-center justify-between gap-[15px]">
-        <h3
-          class="flex items-center text-base font-semibold leading-6 text-gray-900 dark:text-white"
-          :style="textPrimary"
-        >
+        <h3 class="kanban-card__title">
           {{ name || title }}
         </h3>
-        <ActionsMenu :actions="actionsMenuItems" @select="handleMenuSelect" />
+        <ActionsMenu
+          :actions="actionsMenuItems"
+          @click.stop
+          @select="handleMenuSelect"
+        />
       </div>
 
       <!-- Card Body (Phone Number) -->
       <div v-if="phone" class="w-full">
-        <p
-          class="text-sm font-normal leading-[21px] text-gray-500 dark:text-gray-400"
-          :style="textSecondary"
-        >
+        <p class="kanban-card__text-secondary">
           {{ phone }}
         </p>
       </div>
@@ -37,10 +36,7 @@
           >
             <UserIcon class="h-3 w-3 text-gray-900 dark:text-gray-100" />
           </div>
-          <span
-            class="text-sm font-normal leading-[21px] text-gray-900 dark:text-white"
-            :style="textPrimary"
-          >
+          <span class="kanban-card__title">
             {{ contactPerson }}
           </span>
         </div>
@@ -50,10 +46,7 @@
           v-if="badge"
           class="flex flex-row items-center gap-1 rounded-md bg-gray-100 px-3 py-0.5 dark:bg-gray-700"
         >
-          <span
-            class="text-sm font-medium leading-[21px] text-gray-900 dark:text-white"
-            :style="textPrimary"
-          >
+          <span class="kanban-card__title">
             {{ badge }}
           </span>
         </div>
@@ -63,10 +56,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useThemeStyles } from "../../composables/useThemeStyles";
+import { ref } from "vue";
 import ActionsMenu from "../common/ActionsMenu.vue";
-import UserIcon from "../icons/UserIcon.vue";
+import UserIcon from "../icons/common/UserIcon.vue";
 import DropIndicator from "./DropIndicator.vue";
 
 const props = defineProps({
@@ -104,9 +96,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["edit", "drag-start"]);
+const emit = defineEmits(["edit", "delete", "drag-start", "open"]);
 
-const { textPrimary, textSecondary, cardStyle } = useThemeStyles();
+const isDragging = ref(false);
 
 const actionsMenuItems = [
   { label: "Edit Card", value: "edit" },
@@ -124,17 +116,30 @@ const handleMenuSelect = (value) => {
 const handleDragStart = (e) => {
   e.dataTransfer.setData("cardId", props.id);
   e.dataTransfer.effectAllowed = "move";
+  isDragging.value = true;
   emit("drag-start", {
     id: props.id,
     title: props.title || props.name,
     column: props.column,
   });
 };
+
+const handleDragEnd = () => {
+  isDragging.value = false;
+};
+
+const handleCardClick = () => {
+  if (isDragging.value) {
+    isDragging.value = false;
+    return;
+  }
+  emit("open", props.id);
+};
 </script>
 
 <style scoped>
 /* Card specific styles matching design specs */
-div[draggable="true"] {
+.kanban-card {
   width: 256.8px;
   min-height: 134px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1),
@@ -142,10 +147,28 @@ div[draggable="true"] {
   font-family: "Inter", sans-serif;
   flex: none;
   align-self: stretch;
+  background: var(--color-bg-card);
 }
 
-.dark div[draggable="true"] {
+.dark .kanban-card {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4),
     0px 1px 2px -1px rgba(0, 0, 0, 0.3);
+}
+
+.kanban-card__title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  color: var(--color-text-primary);
+}
+
+.kanban-card__text-secondary {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.3125rem;
+  color: var(--color-text-secondary);
 }
 </style>

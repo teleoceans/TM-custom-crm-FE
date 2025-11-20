@@ -25,8 +25,8 @@
 <script setup>
 import { computed } from 'vue'
 import Card from './Card.vue'
-import ArrowUpIcon from '../icons/ArrowUp.vue'
-import ArrowDownIcon from '../icons/ArrowDown.vue'
+import ArrowUpIcon from '../icons/stats/ArrowUp.vue'
+import ArrowDownIcon from '../icons/stats/ArrowDown.vue'
 import { useThemeStyles } from '../../composables/useThemeStyles'
 
 /**

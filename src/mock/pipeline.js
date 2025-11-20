@@ -1,7 +1,7 @@
 export const mockPipelineCards = [
   // New Leads
   {
-    id: "1",
+    id: "LEAD-3001",
     column: "new-leads",
     name: "David Johns",
     phone: "+26534567894",
@@ -9,14 +9,14 @@ export const mockPipelineCards = [
     badge: "User",
   },
   {
-    id: "2",
+    id: "LEAD-3002",
     column: "new-leads",
     name: "Sarah Williams",
     phone: "+1234567890",
     contactPerson: "B.Smith",
   },
   {
-    id: "3",
+    id: "LEAD-3003",
     column: "new-leads",
     name: "Michael Brown",
     phone: "+9876543210",
@@ -25,7 +25,7 @@ export const mockPipelineCards = [
 
   // Contacted
   {
-    id: "4",
+    id: "LEAD-3004",
     column: "contacted",
     name: "Emily Davis",
     phone: "+1122334455",
@@ -33,14 +33,14 @@ export const mockPipelineCards = [
     badge: "High",
   },
   {
-    id: "5",
+    id: "LEAD-3005",
     column: "contacted",
     name: "James Miller",
     phone: "+5566778899",
     contactPerson: "E.Moore",
   },
   {
-    id: "6",
+    id: "LEAD-3006",
     column: "contacted",
     name: "Lisa Anderson",
     phone: "+9988776655",
@@ -49,7 +49,7 @@ export const mockPipelineCards = [
 
   // Won Leads
   {
-    id: "7",
+    id: "LEAD-3007",
     column: "won-leads",
     name: "Robert Thomas",
     phone: "+4433221100",
@@ -57,7 +57,7 @@ export const mockPipelineCards = [
     badge: "Won",
   },
   {
-    id: "8",
+    id: "LEAD-3008",
     column: "won-leads",
     name: "Jennifer White",
     phone: "+7788990011",
@@ -66,7 +66,7 @@ export const mockPipelineCards = [
 
   // Lost Leads
   {
-    id: "9",
+    id: "LEAD-3009",
     column: "lost-leads",
     name: "Christopher Martin",
     phone: "+3344556677",
@@ -74,7 +74,7 @@ export const mockPipelineCards = [
     badge: "Lost",
   },
   {
-    id: "10",
+    id: "LEAD-3010",
     column: "lost-leads",
     name: "Amanda Lewis",
     phone: "+6677889900",

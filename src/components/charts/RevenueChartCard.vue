@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import CalendarIcon from "../icons/Calendar.vue";
+import CalendarIcon from "../icons/common/Calendar.vue";
 import { useThemeStyles } from "../../composables/useThemeStyles";
 
 /**

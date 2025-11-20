@@ -8,7 +8,7 @@
 
 <script setup>
 import ActionsMenu from "../common/ActionsMenu.vue";
-import MoreVertical from "../icons/MoreVertical.vue";
+import MoreVertical from "../icons/common/MoreVertical.vue";
 
 const emit = defineEmits(["edit", "delete"]);
 
