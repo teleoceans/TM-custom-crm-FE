@@ -59,7 +59,8 @@
 
           <ContractPaymentStep
             v-else-if="activeTab === 'contract-payment'"
-            v-model="contractPaymentForm"
+            :model-value="contractPaymentForm"
+            @update:model-value="updateContractPaymentForm"
             @create-contract="handleCreateContract"
             @send-to-client="handleSendContractToClient"
           />
@@ -344,6 +345,11 @@ const updatePlanSeatsForm = (value) => {
   if (value.listPrice) {
     Object.assign(planSeatsForm.listPrice, value.listPrice);
   }
+};
+
+const updateContractPaymentForm = (value) => {
+  // Update the reactive object properties directly to maintain reactivity
+  Object.assign(contractPaymentForm, value);
 };
 
 const handleAddNewUser = () => {
