@@ -17,12 +17,12 @@
       class="grid grid-cols-1 gap-4 py-6 lg:grid-cols-12 lg:items-start lg:gap-4"
     >
       <div class="flex flex-col gap-4 lg:col-span-6">
-        <Card title="User Info" padding="responsive" class="user-info-card">
+        <Card title="User Info" padding="responsive" class="user-info-card overflow-hidden">
           <dl class="space-y-4">
             <div
               v-for="field in profileFields"
               :key="field.key"
-              class="grid w-full grid-cols-[140px_1fr] items-start gap-x-4 gap-y-3 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700"
+              class="flex w-full flex-col gap-y-1 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700 sm:grid sm:grid-cols-[140px_1fr] sm:items-start sm:gap-x-4 sm:gap-y-3"
             >
               <div class="flex items-center gap-2">
                 <component
@@ -30,11 +30,11 @@
                   v-if="field.icon"
                   class="h-4 w-4 text-gray-500 dark:text-gray-400"
                 />
-                <dt class="text-sm text-gray-500 dark:text-gray-400">
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 sm:font-normal">
                   {{ field.label }}
                 </dt>
               </div>
-              <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <dd class="min-w-0 break-words text-sm font-medium text-gray-900 dark:text-gray-100">
                 {{ field.value }}
               </dd>
             </div>
@@ -43,7 +43,7 @@
       </div>
 
       <div class="flex flex-col gap-4 lg:col-span-6">
-        <Card title="Permissions Allowed" padding="responsive" class="permissions-card">
+        <Card title="Permissions Allowed" padding="responsive" class="permissions-card overflow-hidden">
           <div class="space-y-4">
             <div
               v-for="(group, index) in permissionGroups"
@@ -147,6 +147,8 @@ const handleInviteUser = () => {
 :deep(.user-info-card),
 :deep(.permissions-card) {
   padding: 0.5rem !important;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 
 :deep(.user-info-card > div:first-child),
@@ -158,6 +160,26 @@ const handleInviteUser = () => {
 :deep(.user-info-card > div:nth-child(2)),
 :deep(.permissions-card > div:nth-child(2)) {
   padding: 0.25rem 1.5rem !important;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+/* Ensure content doesn't overflow on mobile */
+@media (max-width: 640px) {
+  :deep(.user-info-card),
+  :deep(.permissions-card) {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  :deep(.user-info-card > div:first-child),
+  :deep(.permissions-card > div:first-child) {
+    padding: 0.5rem 1rem !important;
+  }
+
+  :deep(.user-info-card > div:nth-child(2)),
+  :deep(.permissions-card > div:nth-child(2)) {
+    padding: 0.25rem 1rem !important;
+  }
 }
 </style>
 
