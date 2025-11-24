@@ -5,7 +5,7 @@
     <div
       class="col-span-full flex flex-col gap-3 px-4 pt-4 md:flex-row md:items-center md:justify-between"
     >
-      <div class="relative w-full max-w-md">
+      <div class="relative w-full max-w-md md:flex-none">
         <label :for="searchId" class="sr-only">{{ searchLabel }}</label>
         <div
           class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
@@ -35,17 +35,17 @@
         />
       </div>
       <div class="flex items-center gap-3">
-        <Button variant="muted" size="sm" @click="$emit('filter')">
-          <template #icon-left>
-            <FilterIcon class="h-4 w-4" />
-          </template>
-          Filter
-        </Button>
         <Button variant="muted" size="sm" @click="$emit('add')">
           <template #icon-left>
             <PlusIcon class="h-4 w-4" />
           </template>
           {{ addButtonLabel }}
+        </Button>
+        <Button variant="muted" size="sm" @click="$emit('filter')">
+          <template #icon-left>
+            <FilterIcon class="h-4 w-4" />
+          </template>
+          Filter
         </Button>
         <Button
           v-if="showExport"

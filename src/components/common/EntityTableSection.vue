@@ -5,6 +5,9 @@
     :columns="columns"
     :search-term="searchTerm"
     :search-fields="searchFields"
+    :selected-roles="selectedRoles"
+    :selected-tenants="selectedTenants"
+    :selected-statuses="selectedStatuses"
     :resource-name="resourceName"
     :resource-name-plural="resourceNamePlural"
     :enable-date-filter="false"
@@ -93,6 +96,18 @@ const props = defineProps({
     default: "",
   },
   searchFields: {
+    type: Array,
+    default: () => [],
+  },
+  selectedRoles: {
+    type: Array,
+    default: () => [],
+  },
+  selectedTenants: {
+    type: Array,
+    default: () => [],
+  },
+  selectedStatuses: {
     type: Array,
     default: () => [],
   },
