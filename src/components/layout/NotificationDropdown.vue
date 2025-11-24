@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <button
       ref="buttonRef"
       type="button"
@@ -31,83 +31,41 @@
       leave-to-class="transform opacity-0 scale-95"
     >
       <div
-        ref="dropdownRef"
         v-if="isOpen"
-        class="absolute right-0 z-50 my-4 max-w-sm divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-md dark:divide-gray-600 dark:bg-gray-700"
+        ref="dropdownRef"
+        class="absolute right-0 mt-3 z-50 w-64 sm:w-72 md:w-80 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow-md dark:divide-gray-600 dark:bg-gray-700"
       >
         <div
-          class="flex items-center justify-between bg-gray-100 px-4 py-2 text-center font-medium text-gray-900 dark:bg-gray-700 dark:text-white"
+          class="flex items-center justify-center bg-gray-100 px-4 py-2 font-medium text-gray-900 dark:bg-gray-700 dark:text-white"
         >
           <h3>Notifications</h3>
-          <button
-            type="button"
-            class="flex cursor-pointer items-center justify-center rounded-lg p-1.5 text-gray-500 hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-            <svg
-              class="h-5 w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="2"
-                d="M20 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6h-2m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4m16 6H10m0 0a2 2 0 1 0-4 0m4 0a2 2 0 1 1-4 0m0 0H4"
-              />
-            </svg>
-            <span class="sr-only">Options</span>
-          </button>
         </div>
-        <div class="relative max-h-96 overflow-y-auto dark:bg-gray-800">
+
+        <div
+          class="relative max-h-96 overflow-y-auto dark:bg-gray-800 w-full [&>*:last-child]:border-b-0"
+        >
           <slot />
         </div>
-        <a
-          href="#"
-          class="block bg-gray-100 py-2 text-center text-base font-medium text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
-        >
-          <div class="inline-flex items-center">
-            <svg
-              class="me-1.5 h-5 w-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            View all
-          </div>
-        </a>
       </div>
     </Transition>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
 /**
  * Notification dropdown component
  * @component
  */
 
-const isOpen = ref(false)
-const dropdownRef = ref(null)
-const buttonRef = ref(null)
+const isOpen = ref(false);
+const dropdownRef = ref(null);
+const buttonRef = ref(null);
 
 const toggle = () => {
-  isOpen.value = !isOpen.value
-}
+  isOpen.value = !isOpen.value;
+};
 
 const handleClickOutside = (event) => {
   if (
@@ -117,16 +75,15 @@ const handleClickOutside = (event) => {
     !buttonRef.value.contains(event.target) &&
     !dropdownRef.value.contains(event.target)
   ) {
-    isOpen.value = false
+    isOpen.value = false;
   }
-}
+};
 
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+  document.addEventListener("click", handleClickOutside);
+});
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
-
