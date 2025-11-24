@@ -172,6 +172,93 @@ const createTenantDetail = ({
 
 export const defaultTenantDetailId = "TENANT-1001";
 
+// Mock data for tenant roles and costs
+export const mockTenantRolesAndCosts = {
+  "TENANT-1001": {
+    roles: [
+      {
+        id: "role-1",
+        role: "Cold Caller",
+        numberOfAssignedUsers: 5,
+        hourlyRate: 4,
+        dialer: 150,
+        costPerOneUser: 1000,
+        totalCost: 5000,
+        selected: false,
+      },
+      {
+        id: "role-2",
+        role: "Acquisition Manager",
+        numberOfAssignedUsers: null,
+        hourlyRate: 4,
+        dialer: null,
+        costPerOneUser: null,
+        totalCost: null,
+        selected: false,
+      },
+      {
+        id: "role-3",
+        role: "Disposition",
+        numberOfAssignedUsers: 1,
+        hourlyRate: 4,
+        dialer: null,
+        costPerOneUser: 500,
+        totalCost: 500,
+        selected: true,
+      },
+    ],
+    listPrice: {
+      quantity: 1000,
+      pricePerClient: 0.2,
+      totalCost: 200,
+    },
+  },
+  "TENANT-1002": {
+    roles: [
+      {
+        id: "role-1",
+        role: "Cold Caller",
+        numberOfAssignedUsers: 3,
+        hourlyRate: 4,
+        dialer: 150,
+        costPerOneUser: 1000,
+        totalCost: 3000,
+        selected: false,
+      },
+      {
+        id: "role-2",
+        role: "Acquisition Manager",
+        numberOfAssignedUsers: 2,
+        hourlyRate: 4,
+        dialer: null,
+        costPerOneUser: 800,
+        totalCost: 1600,
+        selected: false,
+      },
+      {
+        id: "role-3",
+        role: "Disposition",
+        numberOfAssignedUsers: 1,
+        hourlyRate: 4,
+        dialer: null,
+        costPerOneUser: 500,
+        totalCost: 500,
+        selected: false,
+      },
+    ],
+    listPrice: {
+      quantity: 800,
+      pricePerClient: 0.25,
+      totalCost: 200,
+    },
+  },
+};
+
+// Helper function to get roles and costs for a tenant
+export const getTenantRolesAndCosts = (tenantId) => {
+  return mockTenantRolesAndCosts[tenantId] || mockTenantRolesAndCosts["TENANT-1001"];
+};
+
 export const mockTenantDetailsById = {
   "TENANT-1001": createTenantDetail({
     id: "TENANT-1001",
