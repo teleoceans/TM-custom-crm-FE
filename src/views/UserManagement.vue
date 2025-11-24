@@ -1,15 +1,27 @@
 <template>
   <div class="flex w-full flex-col -mt-6">
-    <ManagementPageHeader
-      :search-term="searchTerm"
-      search-id="user-search"
-      search-label="Search users"
-      search-placeholder="Search users"
-      add-button-label="New User"
-      header-class="users-header"
-      @update:search-term="searchTerm = $event"
-      @add="handleInviteUser"
-    />
+    <div class="relative">
+      <ManagementPageHeader
+        :search-term="searchTerm"
+        search-id="user-search"
+        search-label="Search users"
+        search-placeholder="Search users"
+        add-button-label="New User"
+        header-class="users-header"
+        @update:search-term="searchTerm = $event"
+        @add="handleInviteUser"
+        @filter="handleFilter"
+      />
+      <UsersFilter
+        v-model="showFilter"
+        :selected-roles="selectedRoles"
+        :selected-tenants="selectedTenants"
+        :selected-statuses="selectedStatuses"
+        @update:selected-roles="selectedRoles = $event"
+        @update:selected-tenants="selectedTenants = $event"
+        @update:selected-statuses="selectedStatuses = $event"
+      />
+    </div>
 
     <div class="flex flex-col">
       <section>
@@ -18,6 +30,9 @@
           :columns="allUsersColumns"
           :search-term="searchTerm"
           :search-fields="SEARCH_FIELDS"
+          :selected-roles="selectedRoles"
+          :selected-tenants="selectedTenants"
+          :selected-statuses="selectedStatuses"
           :row-actions="userRowActions"
           :empty-state="allUsersEmptyState"
           badge-variant="all"
@@ -35,6 +50,9 @@
           :columns="newUsersColumns"
           :search-term="searchTerm"
           :search-fields="SEARCH_FIELDS"
+          :selected-roles="selectedRoles"
+          :selected-tenants="selectedTenants"
+          :selected-statuses="selectedStatuses"
           :row-actions="userRowActions"
           :empty-state="newUsersEmptyState"
           badge-variant="new"
@@ -53,6 +71,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import UserTableSection from "../components/users/UserTableSection.vue";
+import UsersFilter from "../components/users/UsersFilter.vue";
 import ManagementPageHeader from "../components/common/ManagementPageHeader.vue";
 import { mockAllUsers, mockNewUsers } from "../mock/users";
 import useDateFormatter from "../composables/useDateFormatter";
@@ -69,6 +88,10 @@ const SEARCH_FIELDS = Object.freeze([
 
 const router = useRouter();
 const searchTerm = ref("");
+const showFilter = ref(false);
+const selectedRoles = ref([]);
+const selectedTenants = ref([]);
+const selectedStatuses = ref([]);
 const allUsers = ref([...mockAllUsers]);
 const newUsers = ref([...mockNewUsers]);
 
@@ -149,6 +172,10 @@ const newUsersEmptyState = {
     "Looks like everyone is onboarded. Invite someone new to collaborate.",
   resetLabel: "Clear search",
   primaryActionLabel: "Invite user",
+};
+
+const handleFilter = () => {
+  showFilter.value = !showFilter.value;
 };
 
 const handleResetSearch = () => {
