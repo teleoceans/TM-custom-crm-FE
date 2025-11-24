@@ -63,6 +63,11 @@ const routes = [
         component: () => import("../views/TenantInfo.vue"),
       },
       {
+        path: "tenant-management/:tenantId/assigned-users",
+        name: "TenantAssignedUsers",
+        component: () => import("../views/TenantAssignedUsers.vue"),
+      },
+      {
         path: "settings",
         name: "Settings",
         component: () => import("../views/Settings.vue"),
