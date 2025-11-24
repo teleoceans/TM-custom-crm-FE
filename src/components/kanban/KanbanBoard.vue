@@ -7,6 +7,7 @@
         :title="columnConfig.title"
         :column="columnConfig.column"
         :heading-color="columnConfig.headingColor"
+        :is-default="columnConfig.isDefault || false"
         :cards="cards"
         @update-cards="handleUpdateCards"
         @add-card="handleAddCard"
@@ -34,15 +35,6 @@
           :error="stageErrors.name"
           required
         />
-        <div class="space-y-2">
-          <span class="text-sm font-medium text-gray-900 dark:text-white">
-            Stage Color
-          </span>
-          <StageColorPicker
-            v-model="stageForm.color"
-            :options="stageColorOptions"
-          />
-        </div>
 
         <div class="flex items-center justify-end gap-3">
           <Button type="button" variant="ghost" @click="closeStageModal">
@@ -63,7 +55,6 @@ import KanbanColumn from "./KanbanColumn.vue";
 import AddStageButton from "./AddStageButton.vue";
 import Input from "../common/Input.vue";
 import Button from "../common/Button.vue";
-import StageColorPicker from "./StageColorPicker.vue";
 import BaseModal from "../common/BaseModal.vue";
 
 const props = defineProps({
@@ -90,7 +81,7 @@ const stageModalTitle = computed(() =>
   stageModalMode.value === "edit" ? "Edit Stage" : "Add New Stage"
 );
 
-const defaultHeadingColor = "text-purple-600 dark:text-purple-400";
+const defaultHeadingColor = "text-black dark:text-white";
 
 const stageColorOptions = [
   {
@@ -124,22 +115,26 @@ const columns = ref([
   {
     title: "New Leads",
     column: "new-leads",
-    headingColor: "text-purple-600 dark:text-purple-400",
+    headingColor: "text-black dark:text-white",
+    isDefault: true,
   },
   {
     title: "Contacted",
     column: "contacted",
-    headingColor: "text-yellow-600 dark:text-yellow-400",
+    headingColor: "text-black dark:text-white",
+    isDefault: true,
   },
   {
     title: "Won Leads",
     column: "won-leads",
-    headingColor: "text-green-600 dark:text-green-400",
+    headingColor: "text-black dark:text-white",
+    isDefault: true,
   },
   {
     title: "Lost Leads",
     column: "lost-leads",
-    headingColor: "text-red-600 dark:text-red-400",
+    headingColor: "text-black dark:text-white",
+    isDefault: true,
   },
 ]);
 
@@ -176,7 +171,6 @@ const openStageModal = () => {
   editingStageKey.value = null;
   showStageModal.value = true;
   stageForm.name = "";
-  stageForm.color = defaultHeadingColor;
   stageErrors.name = "";
   nextTick(() => {
     stageNameInput.value?.focus();
@@ -200,7 +194,6 @@ const stageNameInput = ref(null);
 
 const stageForm = reactive({
   name: "",
-  color: defaultHeadingColor,
 });
 
 const stageErrors = reactive({
@@ -243,7 +236,6 @@ const handleStageSubmit = () => {
   }
 
   const normalizedName = stageForm.name.trim().toLowerCase();
-  const selectedColor = stageForm.color || defaultHeadingColor;
 
   const duplicate = stageNames.value.some(({ key, name }) => {
     if (stageModalMode.value === "edit" && key === editingStageKey.value)
@@ -257,12 +249,16 @@ const handleStageSubmit = () => {
   }
 
   if (stageModalMode.value === "edit" && editingStageKey.value) {
+    const stage = columns.value.find((col) => col.column === editingStageKey.value);
+    if (stage?.isDefault) {
+      return; // Prevent editing default stages
+    }
     const updated = columns.value.map((col) => {
       if (col.column !== editingStageKey.value) return col;
       return {
         ...col,
         title: stageForm.name.trim(),
-        headingColor: selectedColor,
+        headingColor: defaultHeadingColor,
       };
     });
     columns.value = updated;
@@ -276,7 +272,8 @@ const handleStageSubmit = () => {
   const newStage = {
     title: stageForm.name.trim(),
     column: columnKey,
-    headingColor: selectedColor,
+    headingColor: defaultHeadingColor,
+    isDefault: false,
   };
 
   columns.value = [...columns.value, newStage];
@@ -288,10 +285,12 @@ const handleStageSubmit = () => {
 const handleEditStage = (columnKey) => {
   const stage = columns.value.find((col) => col.column === columnKey);
   if (!stage) return;
+  if (stage.isDefault) {
+    return; // Prevent editing default stages
+  }
   stageModalMode.value = "edit";
   editingStageKey.value = stage.column;
   stageForm.name = stage.title;
-  stageForm.color = stage.headingColor || defaultHeadingColor;
   stageErrors.name = "";
   showStageModal.value = true;
   nextTick(() => {
@@ -302,6 +301,9 @@ const handleEditStage = (columnKey) => {
 const handleDeleteStage = (columnKey) => {
   const stage = columns.value.find((col) => col.column === columnKey);
   if (!stage) return;
+  if (stage.isDefault) {
+    return; // Prevent deleting default stages
+  }
   const confirmed = window.confirm(
     `Delete stage "${stage.title}" and all cards within it?`
   );

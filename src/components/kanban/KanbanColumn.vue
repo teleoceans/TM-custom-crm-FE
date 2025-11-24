@@ -10,6 +10,7 @@
           {{ filteredCards.length }}
         </span>
         <ColumnMenu
+          v-if="!isDefault"
           @edit="emit('edit-stage', column)"
           @delete="emit('delete-stage', column)"
         />
@@ -79,6 +80,10 @@ const props = defineProps({
   headingColor: {
     type: String,
     required: true,
+  },
+  isDefault: {
+    type: Boolean,
+    default: false,
   },
   cards: {
     type: Array,
