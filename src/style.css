@@ -49,7 +49,7 @@ body {
 }
 
 .sidebar-collapsible.sidebar-collapsed {
-  @apply lg:!w-16;
+  @apply !w-16;
 }
 
 .sidebar-collapsible.sidebar-collapsed [data-sidebar-collapse-hide] {
