@@ -121,9 +121,10 @@ import TablePagination from "../common/TablePagination.vue";
 import TableEmptyState from "../common/TableEmptyState.vue";
 import TableDateFilter from "../common/TableDateFilter.vue";
 import { formatDate, formatCurrency } from "../../utils/formatters";
-import { DEFAULT_DATE_FILTER_OPTIONS, isWithinRange } from "../../composables/useDateFilter";
+import { DEFAULT_DATE_FILTER_OPTIONS } from "../../composables/useDateFilter";
 import { useTablePagination } from "../../composables/useTablePagination";
 import { useTableSelection } from "../../composables/useTableSelection";
+import { useTableFilters } from "../../composables/useTableFilters";
 
 const stageStyles = {
   "New lead": "card-chip--primary",
@@ -200,6 +201,26 @@ const props = defineProps({
   searchTerm: {
     type: String,
     default: "",
+  },
+  selectedStages: {
+    type: Array,
+    default: () => [],
+  },
+  leadValueRange: {
+    type: Object,
+    default: () => ({ from: null, to: null }),
+  },
+  selectedRoles: {
+    type: Array,
+    default: () => [],
+  },
+  selectedTenants: {
+    type: Array,
+    default: () => [],
+  },
+  selectedStatuses: {
+    type: Array,
+    default: () => [],
   },
   columns: {
     type: Array,
@@ -292,26 +313,67 @@ const resolvedColumns = computed(() => {
 
 const rows = computed(() => props.items ?? props.leads);
 
-// Filter items by search term and date
-const filteredItems = computed(() => {
-  const term = props.searchTerm.trim().toLowerCase();
-  const range = dateFilter.value;
-  const shouldFilterByDate = props.enableDateFilter && Boolean(props.dateField);
+// Stage mapping from filter values to actual stage values
+const stageMapping = {
+  new: "New lead",
+  contacted: "Contacted lead",
+  won: "Won lead",
+  lost: "Lost lead",
+};
 
-  return rows.value.filter((item) => {
-    const matchesTerm =
-      !term ||
-      props.searchFields
-        .map((field) => item[field])
-        .filter(Boolean)
-        .some((field) => String(field).toLowerCase().includes(term));
+// Tenant ID to label mapping
+const tenantMapper = (tenantId) => {
+  const tenantLabels = {
+    "tenant-1": "Tenant 1",
+    "tenant-2": "Tenant 2",
+    "tenant-3": "Tenant 3",
+  };
+  return tenantLabels[tenantId] || tenantId;
+};
 
-    const matchesDate = shouldFilterByDate
-      ? isWithinRange(item[props.dateField], range)
-      : true;
-
-    return matchesTerm && matchesDate;
-  });
+// Use table filters composable
+const { filteredItems } = useTableFilters({
+  items: rows,
+  searchTerm: computed(() => props.searchTerm),
+  searchFields: props.searchFields,
+  dateFilter: props.enableDateFilter
+    ? {
+        enabled: true,
+        field: props.dateField,
+        value: dateFilter,
+      }
+    : null,
+  stageFilter: props.selectedStages
+    ? {
+        selectedStages: computed(() => props.selectedStages || []),
+        mapping: stageMapping,
+      }
+    : null,
+  rangeFilter: props.leadValueRange
+    ? {
+        range: computed(() => props.leadValueRange || { from: null, to: null }),
+        field: "leadValue",
+      }
+    : null,
+  roleFilter: props.selectedRoles
+    ? {
+        selectedRoles: computed(() => props.selectedRoles || []),
+        field: "role",
+      }
+    : null,
+  tenantFilter: props.selectedTenants
+    ? {
+        selectedTenants: computed(() => props.selectedTenants || []),
+        field: "assignedTo",
+        mapper: tenantMapper,
+      }
+    : null,
+  statusFilter: props.selectedStatuses
+    ? {
+        selectedStatuses: computed(() => props.selectedStatuses || []),
+        field: "status",
+      }
+    : null,
 });
 
 // Use pagination composable
@@ -376,7 +438,7 @@ const resolveBadgeClass = (column, item) => {
 const itemLabel = (item) =>
   item.name ?? item.title ?? `${props.resourceName} ${item[props.rowIdKey]}`;
 
-// Reset to page 1 when search term or date filter changes
+// Reset to page 1 when search term, date filter, or other filters change
 watch(
   () => props.searchTerm,
   () => {
@@ -387,6 +449,42 @@ watch(
 watch(dateFilter, () => {
   goToPage(1);
 });
+
+watch(
+  () => props.selectedStages,
+  () => {
+    goToPage(1);
+  }
+);
+
+watch(
+  () => props.leadValueRange,
+  () => {
+    goToPage(1);
+  },
+  { deep: true }
+);
+
+watch(
+  () => props.selectedRoles,
+  () => {
+    goToPage(1);
+  }
+);
+
+watch(
+  () => props.selectedTenants,
+  () => {
+    goToPage(1);
+  }
+);
+
+watch(
+  () => props.selectedStatuses,
+  () => {
+    goToPage(1);
+  }
+);
 
 watch([isIndeterminate, allSelectedOnPage], () => {
   if (selectAllCheckbox.value && props.selectable) {

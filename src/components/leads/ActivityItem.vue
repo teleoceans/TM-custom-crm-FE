@@ -1,5 +1,8 @@
 <template>
   <li class="activity-item">
+    <div v-if="$slots.icon" class="activity-icon">
+      <slot name="icon" />
+    </div>
     <div class="activity-body">
       <p class="activity-title">{{ title }}</p>
       <p class="activity-meta">{{ meta }}</p>
@@ -45,10 +48,20 @@ defineProps({
   padding-bottom: 0;
 }
 
+.activity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
 .activity-body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .activity-title {
