@@ -182,13 +182,20 @@ const createChart = () => {
 // Handle resize for responsiveness (window resize or container size change)
 const handleResize = () => {
   if (chart && chartContainer.value) {
-    const newWidth = chartContainer.value.clientWidth || "100%";
-    chart.updateOptions({
-      chart: {
-        width: newWidth,
-      },
-    });
-    chart.resize();
+    try {
+      const newWidth = chartContainer.value.clientWidth || "100%";
+      chart.updateOptions({
+        chart: {
+          width: newWidth,
+        },
+      });
+      // Check if resize method exists before calling it
+      if (chart && typeof chart.resize === "function") {
+        chart.resize();
+      }
+    } catch (error) {
+      console.warn("Chart resize error:", error);
+    }
   }
 };
 
