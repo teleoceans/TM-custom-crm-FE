@@ -17,17 +17,17 @@
       class="grid grid-cols-1 gap-4 py-6 lg:grid-cols-12 lg:items-start lg:gap-4"
     >
       <div class="flex flex-col gap-4 lg:col-span-6">
-        <Card title="Tenant Info" padding="responsive" class="tenant-info-card">
+        <Card title="Tenant Info" padding="responsive" class="tenant-info-card overflow-hidden">
           <dl class="space-y-4">
             <div
               v-for="field in profileFields"
               :key="field.key"
-              class="grid w-full grid-cols-[140px_1fr] items-start gap-x-4 gap-y-3 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700"
+              class="flex w-full flex-col gap-y-1 border-b border-gray-200 pb-4 last:border-b-0 dark:border-gray-700 sm:grid sm:grid-cols-[140px_1fr] sm:items-start sm:gap-x-4 sm:gap-y-3"
             >
-              <dt class="text-sm text-gray-500 dark:text-gray-400">
+              <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 sm:font-normal">
                 {{ field.label }}
               </dt>
-              <dd class="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <dd class="min-w-0 break-words text-sm font-medium text-gray-900 dark:text-gray-100">
                 {{ field.value }}
               </dd>
             </div>
@@ -39,7 +39,7 @@
         <Card
           title="Assigned Users"
           padding="responsive"
-          class="assigned-users-card"
+          class="assigned-users-card overflow-hidden"
         >
           <div class="space-y-4">
             <!-- Cold Callers Section -->
@@ -100,12 +100,12 @@
 
             <!-- View Details Link -->
             <div class="pt-2">
-              <a
-                href="#"
+              <router-link
+                :to="`/tenant-management/${detail.id}/assigned-users`"
                 class="text-sm text-gray-900 underline dark:text-gray-100"
               >
                 View Details
-              </a>
+              </router-link>
             </div>
           </div>
         </Card>
@@ -213,6 +213,8 @@ const handleAddTenant = () => {
 :deep(.tenant-info-card),
 :deep(.assigned-users-card) {
   padding: 0.5rem !important;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 
 :deep(.tenant-info-card > div:first-child),
@@ -224,5 +226,25 @@ const handleAddTenant = () => {
 :deep(.tenant-info-card > div:nth-child(2)),
 :deep(.assigned-users-card > div:nth-child(2)) {
   padding: 0.25rem 1.5rem !important;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+/* Ensure content doesn't overflow on mobile */
+@media (max-width: 640px) {
+  :deep(.tenant-info-card),
+  :deep(.assigned-users-card) {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  :deep(.tenant-info-card > div:first-child),
+  :deep(.assigned-users-card > div:first-child) {
+    padding: 0.5rem 1rem !important;
+  }
+
+  :deep(.tenant-info-card > div:nth-child(2)),
+  :deep(.assigned-users-card > div:nth-child(2)) {
+    padding: 0.25rem 1rem !important;
+  }
 }
 </style>
