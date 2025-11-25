@@ -90,6 +90,17 @@ polygon {
   --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Kanban Dimensions */
+  --kanban-column-width: 256.8px;
+  --kanban-card-min-height: 134px;
+
+  /* Stage Colors for Kanban */
+  --stage-color-purple: #5521b5;
+  --stage-color-yellow: #fbbf24;
+  --stage-color-green: #22c55e;
+  --stage-color-red: #ef4444;
+  --stage-color-blue: #42389d;
 }
 
 /* Placeholder colors using CSS variables */
@@ -146,6 +157,17 @@ polygon {
   --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-input: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+
+  /* Kanban Dimensions (same in dark mode) */
+  --kanban-column-width: 256.8px;
+  --kanban-card-min-height: 134px;
+
+  /* Stage Colors for Kanban (same in dark mode) */
+  --stage-color-purple: #5521b5;
+  --stage-color-yellow: #fbbf24;
+  --stage-color-green: #22c55e;
+  --stage-color-red: #ef4444;
+  --stage-color-blue: #42389d;
 }
 
 /* Shared utility class for header margins */
