@@ -65,11 +65,11 @@
     </div>
 
     <!-- Tasks and Activity Section -->
-    <div class="mt-4 grid gap-4 lg:grid-cols-2">
+    <div class="mt-4 grid gap-4 lg:grid-cols-3">
       <!-- Task List -->
       <Card
         padding="none"
-        class="overflow-hidden border border-gray-300 dark:border-white"
+        class="lg:col-span-2 overflow-hidden border border-gray-300 dark:border-white"
         :border="false"
       >
         <div class="overflow-x-auto">
@@ -94,11 +94,21 @@
                 :key="task.id"
                 class="transition hover:bg-gray-50 dark:hover:bg-gray-800"
               >
-                <td class="px-6 py-4 whitespace-nowrap">{{ task.task }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td
+                  class="px-6 py-4 whitespace-nowrap dark:text-[var(--color-text-primary)]"
+                >
+                  {{ task.task }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap dark:text-[var(--color-text-primary)]"
+                >
                   {{ task.assignedTo }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ task.date }}</td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap dark:text-[var(--color-text-primary)]"
+                >
+                  {{ task.date }}
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <Badge :variant="getStatusVariant(task.status)">
                     {{ task.status }}
@@ -118,75 +128,83 @@
       </Card>
 
       <!-- Recent Activity -->
-      <div class="recent-activity-card">
-        <h3 class="text-lg font-semibold">Recent Activity</h3>
-        <div class="recent-activity-content">
-          <ul class="recent-activity-list">
-            <ActivityItem
-              v-for="activity in filteredActivities"
-              :key="activity.id"
-              :title="activity.title"
-              :meta="activity.description"
-            >
-              <template #icon>
-                <div
-                  :class="[
-                    'flex h-6 w-6 items-center justify-center rounded-full',
-                    activity.icon === 'user-plus'
-                      ? 'bg-green-100 dark:bg-green-900'
-                      : 'bg-yellow-100 dark:bg-yellow-900',
-                  ]"
-                >
-                  <svg
-                    v-if="activity.icon === 'user-plus'"
-                    class="h-4 w-4 text-green-600 dark:text-green-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+      <div class="lg:col-span-1">
+        <h3
+          class="mb-4 text-lg font-semibold text-gray-900 dark:text-[var(--color-text-primary)]"
+        >
+          Recent Activity
+        </h3>
+        <div class="recent-activity-card">
+          <div class="recent-activity-content">
+            <ul class="recent-activity-list">
+              <ActivityItem
+                v-for="activity in filteredActivities"
+                :key="activity.id"
+                :title="activity.title"
+                :meta="activity.description"
+              >
+                <template #icon>
+                  <div
+                    :class="[
+                      'flex h-6 w-6 items-center justify-center rounded-full',
+                      activity.icon === 'user-plus'
+                        ? 'bg-green-100 dark:bg-green-900'
+                        : 'bg-yellow-100 dark:bg-yellow-900',
+                    ]"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                    />
-                  </svg>
-                  <svg
-                    v-else-if="activity.icon === 'funnel'"
-                    class="h-4 w-4 text-yellow-600 dark:text-yellow-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                    />
-                  </svg>
-                </div>
-              </template>
-            </ActivityItem>
-            <li
-              v-if="filteredActivities.length === 0"
-              class="px-4 py-8 text-center"
+                    <svg
+                      v-if="activity.icon === 'user-plus'"
+                      class="h-4 w-4 text-green-600 dark:text-green-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                      />
+                    </svg>
+                    <svg
+                      v-else-if="activity.icon === 'funnel'"
+                      class="h-4 w-4 text-yellow-600 dark:text-yellow-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                      />
+                    </svg>
+                  </div>
+                </template>
+              </ActivityItem>
+              <li
+                v-if="filteredActivities.length === 0"
+                class="px-4 py-8 text-center"
+              >
+                <p class="text-gray-500 dark:text-gray-400">
+                  No recent activity
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="recent-activity-footer">
+            <select
+              v-model="activityFilter"
+              class="border-none rounded-lg bg-white px-3 pr-8 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:bg-gray-700 dark:text-gray-300 dark:focus:ring-primary-800"
             >
-              <p class="text-gray-500 dark:text-gray-400">No recent activity</p>
-            </li>
-          </ul>
-        </div>
-        <div class="recent-activity-footer">
-          <select
-            v-model="activityFilter"
-            class="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-700 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:focus:border-primary-500 dark:focus:ring-primary-800"
-          >
-            <option value="last-7-days">Last 7 days</option>
-            <option value="last-30-days">Last 30 days</option>
-            <option value="all">All time</option>
-          </select>
+              <option value="last-7-days">Last 7 days</option>
+              <option value="last-30-days">Last 30 days</option>
+              <option value="all">All time</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -303,35 +321,36 @@ const handleAddNewTask = () => {
   align-items: flex-start;
   padding: 20px;
   gap: 16px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-default);
   border-radius: 8px;
   align-self: stretch;
-}
-
-.recent-activity-card h3 {
-  margin: 0;
-  width: 100%;
+  min-height: 0;
 }
 
 .recent-activity-content {
   width: 100%;
   flex: 1;
+  min-height: 0;
 }
 
 .recent-activity-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .recent-activity-footer {
   width: 100%;
   margin-top: auto;
+  padding-top: 8px;
 }
 
 .dark .recent-activity-card {
-  background: #1f2937;
-  border-color: #ffffff;
+  background: var(--color-bg-card);
+  border-color: var(--color-border-default);
 }
 </style>
