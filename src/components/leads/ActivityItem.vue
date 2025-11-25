@@ -82,11 +82,11 @@ defineProps({
 }
 
 .dark .activity-title {
-  color: #f9fafb;
+  color: var(--color-text-primary);
 }
 
 .dark .activity-meta {
-  color: #9ca3af;
+  color: var(--color-text-primary);
 }
 </style>
 
