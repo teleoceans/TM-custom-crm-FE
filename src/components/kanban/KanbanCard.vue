@@ -130,8 +130,8 @@ const handleCardClick = () => {
 <style scoped>
 /* Card specific styles matching design specs */
 .kanban-card {
-  width: 256.8px;
-  min-height: 134px;
+  width: var(--kanban-column-width);
+  min-height: var(--kanban-card-min-height);
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1),
     0px 1px 2px -1px rgba(0, 0, 0, 0.1);
   font-family: "Inter", sans-serif;

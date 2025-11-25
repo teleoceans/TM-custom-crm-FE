@@ -1,5 +1,5 @@
 <template>
-  <div class="shrink-0" style="width: 256.8px">
+  <div class="shrink-0" :style="{ width: 'var(--kanban-column-width)' }">
     <!-- Column Header -->
     <div class="mb-3 flex items-center justify-between">
       <h3 :class="['text-sm font-bold', headingColor]">

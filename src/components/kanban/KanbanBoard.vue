@@ -87,27 +87,27 @@ const stageColorOptions = [
   {
     label: "Purple",
     value: "text-purple-600 dark:text-purple-400",
-    background: "var(--purple-800, #5521B5)",
+    background: "var(--stage-color-purple)",
   },
   {
     label: "Yellow",
     value: "text-yellow-600 dark:text-yellow-400",
-    background: "#FFC107",
+    background: "var(--stage-color-yellow)",
   },
   {
     label: "Green",
     value: "text-green-600 dark:text-green-400",
-    background: "#28A745",
+    background: "var(--stage-color-green)",
   },
   {
     label: "Red",
     value: "text-red-600 dark:text-red-400",
-    background: "#DC3545",
+    background: "var(--stage-color-red)",
   },
   {
     label: "Blue",
     value: "text-blue-600 dark:text-blue-400",
-    background: "#42389D",
+    background: "var(--stage-color-blue)",
   },
 ];
 
