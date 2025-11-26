@@ -218,7 +218,7 @@ const planSeatsForm = reactive({
     enabled: false,
     numberOfCallers: 2,
     hourlyRate: 4,
-    dialerPrice: 150,
+    numberOfDialers: 1,
     totalCost: 1000,
   },
   acquisitionManager: {
