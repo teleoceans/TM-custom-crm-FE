@@ -1,7 +1,41 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainLayout from "../layouts/MainLayout.vue";
+import AuthLayout from "../layouts/AuthLayout.vue";
 
 const routes = [
+  {
+    path: "/login",
+    component: AuthLayout,
+    children: [
+      {
+        path: "",
+        name: "Login",
+        component: () => import("../views/auth/Login.vue"),
+      },
+    ],
+  },
+  {
+    path: "/forgot-password",
+    component: AuthLayout,
+    children: [
+      {
+        path: "",
+        name: "ForgotPassword",
+        component: () => import("../views/auth/ForgotPassword.vue"),
+      },
+    ],
+  },
+  {
+    path: "/reset-password",
+    component: AuthLayout,
+    children: [
+      {
+        path: "",
+        name: "ResetPassword",
+        component: () => import("../views/auth/ResetPassword.vue"),
+      },
+    ],
+  },
   {
     path: "/",
     component: MainLayout,
